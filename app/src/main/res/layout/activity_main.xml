@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.tabs.TabLayout
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/main_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_marginTop="3dp"
+        app:layout_constraintTop_toBottomOf="@+id/main_tablayout"
+        android:id="@+id/main_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:visibility="gone"
+        android:id="@+id/fab_reminder"
+        android:layout_marginBottom="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/fab_notes"
+        app:layout_constraintEnd_toEndOf="@+id/fab_notes"
+        android:src="@drawable/ic_reminder"
+        app:tint="@color/white"
+        android:backgroundTint="#B84CAA"
+        app:borderWidth="0dp"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:visibility="gone"
+        android:id="@+id/fab_notes"
+        android:layout_marginBottom="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/main_fab"
+        app:layout_constraintEnd_toEndOf="@+id/main_fab"
+        android:src="@drawable/ic_notes"
+        app:tint="@color/white"
+        android:backgroundTint="#02938E"
+        app:borderWidth="0dp"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/main_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/main_color"
+        app:tint="@color/white"
+        android:src="@drawable/ic_plus"
+        app:fabSize="normal"
+        app:borderWidth="0dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
