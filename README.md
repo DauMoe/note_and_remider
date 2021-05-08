@@ -1,2 +1,2 @@
-# note_and_remider
+# Note And Remider
 Just a mini app for fun!
