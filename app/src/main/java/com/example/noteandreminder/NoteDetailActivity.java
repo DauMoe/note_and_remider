@@ -1,19 +1,23 @@
 package com.example.noteandreminder;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 public class NoteDetailActivity extends AppCompatActivity {
-    private ImageView note_detail_back, note_detail_save;
+    private ImageView note_detail_back, note_detail_save, note_detail_theme;
     private EditText note_detail_title, note_detail_content;
     public Typeface OpenSans_bold, OpenSans_regular;
-
+    public String[] colorArr = new String[] {"Pink", "Black", "White"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +27,19 @@ public class NoteDetailActivity extends AppCompatActivity {
         OpenSans_regular = ResourcesCompat.getFont(getApplicationContext(), R.font.opensans_regular);
         initVariable();
         goBack();
+        chooseTheme();
         saveNote();
+    }
+
+
+
+    private void chooseTheme() {
+        note_detail_theme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void saveNote() {
@@ -49,11 +65,23 @@ public class NoteDetailActivity extends AppCompatActivity {
     private void initVariable() {
         note_detail_back = findViewById(R.id.note_detail_back);
         note_detail_save = findViewById(R.id.note_detail_save);
+        note_detail_theme = findViewById(R.id.note_detail_theme);
         note_detail_title = findViewById(R.id.note_detail_title);
         note_detail_content = findViewById(R.id.note_detail_content);
 
         //Set Font Family for Edittext
         note_detail_title.setTypeface(OpenSans_bold);
         note_detail_content.setTypeface(OpenSans_regular);
+
+        //Register context menu
+        this.registerForContextMenu(note_detail_theme);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle("Choose theme!");
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.note_theme_picker, menu);
     }
 }
