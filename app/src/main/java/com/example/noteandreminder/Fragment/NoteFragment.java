@@ -10,9 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.noteandreminder.Adapter.NoteContainerAdapter;
-import com.example.noteandreminder.Module.NoteContainer;
-import com.example.noteandreminder.Module.NoteItem;
+import com.example.noteandreminder.Adapter.NoteAdapter;
+import com.example.noteandreminder.Module.Note;
 import com.example.noteandreminder.R;
 
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class NoteFragment extends Fragment {
     }
 
     private RecyclerView note_recycle;
-    private NoteContainerAdapter note_adapter;
+    private NoteAdapter note_adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,7 +73,7 @@ public class NoteFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_note, container, false);
         note_recycle = v.findViewById(R.id.note_recycleView);
-        note_adapter = new NoteContainerAdapter(getContext());
+        note_adapter = new NoteAdapter(getContext());
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         note_recycle.setLayoutManager(manager);
         note_adapter.setData(fetchListItem());
@@ -82,16 +81,11 @@ public class NoteFragment extends Fragment {
         return v;
     }
 
-    private List<NoteContainer> fetchListItem() {
-        List<NoteContainer> data = new ArrayList<>();
-        List<NoteItem> list = new ArrayList<>();
-        String title1 = "Mar 04, 2021";
-        String title2 = "Jun 12, 2022";
-        list.add(new NoteItem(false, "this is test content"));
-        list.add(new NoteItem(true, "this is test content1"));
-        list.add(new NoteItem(false, "this is test content3"));
-        data.add(new NoteContainer(title1, list));
-        data.add(new NoteContainer(title2, list));
-        return data;
+    private List<Note> fetchListItem() {
+        List<Note> list = new ArrayList<>();
+        list.add(new Note("title1", "this is test content"));
+        list.add(new Note("title2", "this is test content1"));
+        list.add(new Note("title3", "this is test content3"));
+        return list;
     }
 }
