@@ -37,7 +37,7 @@ public class NoteDetailActivity extends AppCompatActivity {
         note_detail_theme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                openContextMenu(v);
             }
         });
     }
@@ -81,7 +81,9 @@ public class NoteDetailActivity extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.setHeaderTitle("Choose theme!");
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.note_theme_picker, menu);
+        menu.add(0, v.getId(), 0,"Yellow");
+        menu.add(0, v.getId(), 0,"Green");
+        menu.add(0, v.getId(), 0,"Blue");
+        menu.add(0, v.getId(), 0,"White");
     }
 }
