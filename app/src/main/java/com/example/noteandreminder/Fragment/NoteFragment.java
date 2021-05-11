@@ -83,9 +83,9 @@ public class NoteFragment extends Fragment {
 
     private List<Note> fetchListItem() {
         List<Note> list = new ArrayList<>();
-        list.add(new Note("title1", "this is test content"));
-        list.add(new Note("title2", "this is test content1"));
-        list.add(new Note("title3", "this is test content3"));
+        list.add(new Note("title1", "this is test content", 1));
+        list.add(new Note("title2", "this is test content1", 2));
+        list.add(new Note("title3", "this is test content3", 1));
         return list;
     }
 }

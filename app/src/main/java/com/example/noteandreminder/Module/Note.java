@@ -4,10 +4,12 @@ import android.widget.TextView;
 
 public class Note {
     private String note_title, note_content;
+    private int ThemeID;
 
-    public Note(String note_title, String note_content) {
+    public Note(String note_title, String note_content, int themeID) {
         this.note_title = note_title;
         this.note_content = note_content;
+        ThemeID = themeID;
     }
 
     public String getNote_title() {
@@ -24,5 +26,13 @@ public class Note {
 
     public void setNote_content(String note_content) {
         this.note_content = note_content;
+    }
+
+    public int getThemeID() {
+        return ThemeID;
+    }
+
+    public void setThemeID(int themeID) {
+        ThemeID = themeID;
     }
 }
