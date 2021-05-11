@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.noteandreminder.Module.ColorCode;
+import com.example.noteandreminder.Module.Note;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,17 +90,32 @@ public class NoteDetailActivity extends AppCompatActivity {
         note_detail_content = findViewById(R.id.note_detail_content);
         note_detail = findViewById(R.id.note_detail);
 
-        //Default theme
-        note_detail.setBackgroundColor(Color.parseColor(listColor.get(3).getBackgroundColorCode()));
-        note_detail_title.setTextColor(Color.parseColor(listColor.get(3).getContentColorCode()));
-        note_detail_content.setTextColor(Color.parseColor(listColor.get(3).getContentColorCode()));
-
         //Set Font Family for Edittext
         note_detail_title.setTypeface(OpenSans_bold);
         note_detail_content.setTypeface(OpenSans_regular);
 
         //Register context menu
         this.registerForContextMenu(note_detail_theme);
+
+        //Get Intent Data
+        Bundle IntentData = getIntent().getExtras();
+        if (IntentData != null) {
+            if (IntentData.getString("state") == "new") {
+                note_detail_title.setText("");
+                note_detail_content.setText("");
+                note_detail.setBackgroundColor(Color.parseColor(listColor.get(3).getBackgroundColorCode()));
+                note_detail_title.setTextColor(Color.parseColor(listColor.get(3).getContentColorCode()));
+                note_detail_content.setTextColor(Color.parseColor(listColor.get(3).getContentColorCode()));
+            }
+            if (IntentData.getString("state") == "edit") {
+                Note data = (Note) IntentData.getSerializable("note_data");
+                note_detail_title.setText(data.getNote_title());
+                note_detail_content.setText(data.getNote_content());
+                note_detail.setBackgroundColor(Color.parseColor(listColor.get(data.getThemeID()).getBackgroundColorCode()));
+                note_detail_title.setTextColor(Color.parseColor(listColor.get(data.getThemeID()).getContentColorCode()));
+                note_detail_content.setTextColor(Color.parseColor(listColor.get(data.getThemeID()).getContentColorCode()));
+            }
+        }
     }
 
     @Override

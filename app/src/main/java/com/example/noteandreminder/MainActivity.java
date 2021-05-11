@@ -66,8 +66,9 @@ public class MainActivity extends AppCompatActivity {
         fab_note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent AddNoteIntent = new Intent(MainActivity.this, AddNoteActivity.class);
-                startActivity(AddNoteIntent);
+                Intent NoteDetailIntent = new Intent(MainActivity.this, NoteDetailActivity.class);
+                NoteDetailIntent.putExtra("state", "new");
+                startActivity(NoteDetailIntent);
             }
         });
 

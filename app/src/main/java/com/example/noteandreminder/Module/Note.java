@@ -2,7 +2,9 @@ package com.example.noteandreminder.Module;
 
 import android.widget.TextView;
 
-public class Note {
+import java.io.Serializable;
+
+public class Note implements Serializable {
     private String note_title, note_content;
     private int ThemeID;
 
