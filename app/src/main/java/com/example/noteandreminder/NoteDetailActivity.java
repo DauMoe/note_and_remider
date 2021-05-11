@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -16,12 +17,18 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.noteandreminder.Module.ColorCode;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class NoteDetailActivity extends AppCompatActivity {
     private ConstraintLayout note_detail;
     private ImageView note_detail_back, note_detail_save, note_detail_theme;
     private EditText note_detail_title, note_detail_content;
     public Typeface OpenSans_bold, OpenSans_regular;
-    public String[] colorArr = new String[] {"Pink", "Black", "White"};
+    public List<ColorCode> listColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +36,20 @@ public class NoteDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_note_detail);
         OpenSans_bold = ResourcesCompat.getFont(getApplicationContext(), R.font.opensans_bold);
         OpenSans_regular = ResourcesCompat.getFont(getApplicationContext(), R.font.opensans_regular);
+        initColor();
         initVariable();
         goBack();
         chooseTheme();
         saveNote();
     }
 
+    private void initColor() {
+        listColor = new ArrayList<>();
+        listColor.add(new ColorCode(0, "Pink", "#FDC1CF", "#B80202"));
+        listColor.add(new ColorCode(1, "Yellow", "#FFEDAD", "#D6691A"));
+        listColor.add(new ColorCode(2, "Blue", "#A3F8FD", "#167BD9"));
+        listColor.add(new ColorCode(3, "White", "#FFFFFF", "#45415F"));
+    }
 
 
     private void chooseTheme() {
@@ -72,6 +87,12 @@ public class NoteDetailActivity extends AppCompatActivity {
         note_detail_theme = findViewById(R.id.note_detail_theme);
         note_detail_title = findViewById(R.id.note_detail_title);
         note_detail_content = findViewById(R.id.note_detail_content);
+        note_detail = findViewById(R.id.note_detail);
+
+        //Default theme
+        note_detail.setBackgroundColor(Color.parseColor(listColor.get(3).getBackgroundColorCode()));
+        note_detail_title.setTextColor(Color.parseColor(listColor.get(3).getContentColorCode()));
+        note_detail_content.setTextColor(Color.parseColor(listColor.get(3).getContentColorCode()));
 
         //Set Font Family for Edittext
         note_detail_title.setTypeface(OpenSans_bold);
@@ -85,18 +106,17 @@ public class NoteDetailActivity extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.setHeaderTitle("Choose theme!");
-        menu.add(0, v.getId(), 0,"Yellow");
-        menu.add(0, v.getId(), 0,"Green");
-        menu.add(0, v.getId(), 0,"Blue");
-        menu.add(0, v.getId(), 0,"White");
+        for (int i=0; i<listColor.size(); i++) {
+            menu.add(0, listColor.get(i).getID(), 0,listColor.get(i).getNameColor());
+        }
     }
 
     //Change theme
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if (item.getTitle() == "Yellow") {
-
-        }
+        note_detail.setBackgroundColor(Color.parseColor(listColor.get(item.getItemId()).getBackgroundColorCode()));
+        note_detail_title.setTextColor(Color.parseColor(listColor.get(item.getItemId()).getContentColorCode()));
+        note_detail_content.setTextColor(Color.parseColor(listColor.get(item.getItemId()).getContentColorCode()));
         return true;
     }
 }
