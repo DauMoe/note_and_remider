@@ -1,7 +1,9 @@
 package com.example.noteandreminder;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.DialogInterface;
@@ -9,11 +11,13 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 public class NoteDetailActivity extends AppCompatActivity {
+    private ConstraintLayout note_detail;
     private ImageView note_detail_back, note_detail_save, note_detail_theme;
     private EditText note_detail_title, note_detail_content;
     public Typeface OpenSans_bold, OpenSans_regular;
@@ -85,5 +89,14 @@ public class NoteDetailActivity extends AppCompatActivity {
         menu.add(0, v.getId(), 0,"Green");
         menu.add(0, v.getId(), 0,"Blue");
         menu.add(0, v.getId(), 0,"White");
+    }
+
+    //Change theme
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (item.getTitle() == "Yellow") {
+
+        }
+        return true;
     }
 }
