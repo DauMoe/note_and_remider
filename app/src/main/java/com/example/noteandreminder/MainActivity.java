@@ -11,8 +11,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.example.noteandreminder.Adapter.TabLayoutAdapter;
+import com.example.noteandreminder.Module.ColorCode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,14 +26,24 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton main_fab, fab_note, fab_reminder;
     public static Animation rotate_out_fab, rotate_in_fab, to_bottom, to_top;
     private boolean fab_clicked = false;
+    public static List<ColorCode> listColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initColor();
         initVariable();
         initAnimation();
         hanldingFABEvemt();
+    }
+
+    private void initColor() {
+        listColor = new ArrayList<>();
+        listColor.add(new ColorCode(0, "Pink", "#FDC1CF", "#B80202"));
+        listColor.add(new ColorCode(1, "Yellow", "#FFEDAD", "#D6691A"));
+        listColor.add(new ColorCode(2, "Blue", "#A3F8FD", "#167BD9"));
+        listColor.add(new ColorCode(3, "White", "#FFFFFF", "#45415F"));
     }
 
     private void initAnimation() {

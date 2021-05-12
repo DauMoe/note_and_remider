@@ -25,12 +25,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.example.noteandreminder.MainActivity.listColor;
+
 public class NoteDetailActivity extends AppCompatActivity {
     private ConstraintLayout note_detail;
     private ImageView note_detail_back, note_detail_save, note_detail_theme;
     private EditText note_detail_title, note_detail_content;
     public Typeface OpenSans_bold, OpenSans_regular;
-    public List<ColorCode> listColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +39,10 @@ public class NoteDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_note_detail);
         OpenSans_bold = ResourcesCompat.getFont(getApplicationContext(), R.font.opensans_bold);
         OpenSans_regular = ResourcesCompat.getFont(getApplicationContext(), R.font.opensans_regular);
-        initColor();
         initVariable();
         goBack();
         chooseTheme();
         saveNote();
-    }
-
-    private void initColor() {
-        listColor = new ArrayList<>();
-        listColor.add(new ColorCode(0, "Pink", "#FDC1CF", "#B80202"));
-        listColor.add(new ColorCode(1, "Yellow", "#FFEDAD", "#D6691A"));
-        listColor.add(new ColorCode(2, "Blue", "#A3F8FD", "#167BD9"));
-        listColor.add(new ColorCode(3, "White", "#FFFFFF", "#45415F"));
     }
 
 
