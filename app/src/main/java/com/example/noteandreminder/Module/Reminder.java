@@ -6,12 +6,14 @@ public class Reminder {
     private String reminder_title, reminder_desc;
     private int themeID;
     private LocalDateTime remind_time;
+    private boolean reminder_completed;
 
-    public Reminder(String reminder_title, String reminder_content, int themeID, LocalDateTime remind_time) {
+    public Reminder(String reminder_title, String reminder_desc, int themeID, LocalDateTime remind_time, boolean reminder_completed) {
         this.reminder_title = reminder_title;
-        this.reminder_desc = reminder_content;
+        this.reminder_desc = reminder_desc;
         this.themeID = themeID;
         this.remind_time = remind_time;
+        this.reminder_completed = reminder_completed;
     }
 
     public String getReminder_title() {
@@ -22,12 +24,12 @@ public class Reminder {
         this.reminder_title = reminder_title;
     }
 
-    public String getReminder_content() {
+    public String getReminder_desc() {
         return reminder_desc;
     }
 
-    public void setReminder_content(String reminder_content) {
-        this.reminder_desc = reminder_content;
+    public void setReminder_desc(String reminder_desc) {
+        this.reminder_desc = reminder_desc;
     }
 
     public int getThemeID() {
@@ -44,5 +46,13 @@ public class Reminder {
 
     public void setRemind_time(LocalDateTime remind_time) {
         this.remind_time = remind_time;
+    }
+
+    public boolean isReminder_completed() {
+        return reminder_completed;
+    }
+
+    public void setReminder_completed(boolean reminder_completed) {
+        this.reminder_completed = reminder_completed;
     }
 }
