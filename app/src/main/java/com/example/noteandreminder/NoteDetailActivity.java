@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -98,23 +99,21 @@ public class NoteDetailActivity extends AppCompatActivity {
         this.registerForContextMenu(note_detail_theme);
 
         //Get Intent Data
-        Bundle IntentData = getIntent().getExtras();
-        if (IntentData != null) {
-            if (IntentData.getString("state") == "new") {
-                note_detail_title.setText("");
-                note_detail_content.setText("");
-                note_detail.setBackgroundColor(Color.parseColor(listColor.get(3).getBackgroundColorCode()));
-                note_detail_title.setTextColor(Color.parseColor(listColor.get(3).getContentColorCode()));
-                note_detail_content.setTextColor(Color.parseColor(listColor.get(3).getContentColorCode()));
-            }
-            if (IntentData.getString("state") == "edit") {
-                Note data = (Note) IntentData.getSerializable("note_data");
-                note_detail_title.setText(data.getNote_title());
-                note_detail_content.setText(data.getNote_content());
-                note_detail.setBackgroundColor(Color.parseColor(listColor.get(data.getThemeID()).getBackgroundColorCode()));
-                note_detail_title.setTextColor(Color.parseColor(listColor.get(data.getThemeID()).getContentColorCode()));
-                note_detail_content.setTextColor(Color.parseColor(listColor.get(data.getThemeID()).getContentColorCode()));
-            }
+        Intent IntentData = getIntent();
+        if (IntentData.getStringExtra("state").equals("new")) {
+            note_detail_title.setText("");
+            note_detail_content.setText("");
+            note_detail.setBackgroundColor(Color.parseColor(listColor.get(3).getBackgroundColorCode()));
+            note_detail_title.setTextColor(Color.parseColor(listColor.get(3).getContentColorCode()));
+            note_detail_content.setTextColor(Color.parseColor(listColor.get(3).getContentColorCode()));
+        }
+        if (IntentData.getStringExtra("state").equals("edit")) {
+            Note data = (Note) IntentData.getSerializableExtra("data");
+            note_detail_title.setText(data.getNote_title());
+            note_detail_content.setText(data.getNote_content());
+            note_detail.setBackgroundColor(Color.parseColor(listColor.get(data.getThemeID()).getBackgroundColorCode()));
+            note_detail_title.setTextColor(Color.parseColor(listColor.get(data.getThemeID()).getContentColorCode()));
+            note_detail_content.setTextColor(Color.parseColor(listColor.get(data.getThemeID()).getContentColorCode()));
         }
     }
 

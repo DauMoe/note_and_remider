@@ -13,8 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.noteandreminder.Fragment.NoteFragment;
 import com.example.noteandreminder.MainActivity;
 import com.example.noteandreminder.Module.Note;
+import com.example.noteandreminder.NoteDetailActivity;
 import com.example.noteandreminder.R;
 
 import java.util.List;
@@ -48,8 +50,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         holder.note_preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent note_detail = new Intent(MainActivity.this, NoteDetail.class);
-                Toast.makeText(context,"Iam click", Toast.LENGTH_LONG).show();
+                Intent NoteDetailIntent = new Intent(context, NoteDetailActivity.class);
+                NoteDetailIntent.putExtra("state", "edit");
+                NoteDetailIntent.putExtra("data", note_preview_item);
+                context.startActivity(NoteDetailIntent);
             }
         });
     }
