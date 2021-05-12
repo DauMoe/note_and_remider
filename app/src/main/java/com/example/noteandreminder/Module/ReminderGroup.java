@@ -1,22 +1,23 @@
 package com.example.noteandreminder.Module;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 public class ReminderGroup {
-    private Date reminder_date;
+    private LocalDate reminder_date;
     private List<Reminder> data;
 
-    public ReminderGroup(Date date, List<Reminder> data) {
+    public ReminderGroup(LocalDate date, List<Reminder> data) {
         this.reminder_date = date;
         this.data = data;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return reminder_date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.reminder_date = date;
     }
 

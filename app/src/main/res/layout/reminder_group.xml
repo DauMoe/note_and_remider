@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         xmlns:android="http://schemas.android.com/apk/res/android">
         <TextView
-            android:id="@+id/reminder_container_day"
+            android:id="@+id/reminder_group_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Today"
@@ -18,7 +18,7 @@
             android:fontFamily="@font/opensans_extrabold"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/reminder_container_content"
+            android:id="@+id/reminder_group_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>

@@ -1,14 +1,15 @@
 package com.example.noteandreminder.Module;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Reminder {
     private String reminder_title, reminder_desc;
     private int themeID;
-    private LocalDateTime remind_time;
+    private LocalTime remind_time;
     private boolean reminder_completed;
 
-    public Reminder(String reminder_title, String reminder_desc, int themeID, LocalDateTime remind_time, boolean reminder_completed) {
+    public Reminder(String reminder_title, String reminder_desc, int themeID, LocalTime remind_time, boolean reminder_completed) {
         this.reminder_title = reminder_title;
         this.reminder_desc = reminder_desc;
         this.themeID = themeID;
@@ -40,11 +41,11 @@ public class Reminder {
         this.themeID = themeID;
     }
 
-    public LocalDateTime getRemind_time() {
+    public LocalTime getRemind_time() {
         return remind_time;
     }
 
-    public void setRemind_time(LocalDateTime remind_time) {
+    public void setRemind_time(LocalTime remind_time) {
         this.remind_time = remind_time;
     }
 
