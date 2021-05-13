@@ -86,7 +86,6 @@ public class ReminderFragment extends Fragment {
         reminder_frag = v.findViewById(R.id.reminder_frag);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         ReminderGroupAdapter adapter = new ReminderGroupAdapter(getContext());
-//        ReminderItemAdapter adapter = new ReminderItemAdapter(getContext());
         reminder_frag.setLayoutManager(manager);
         adapter.setData(fetchRemidnerData());
         reminder_frag.setAdapter(adapter);
