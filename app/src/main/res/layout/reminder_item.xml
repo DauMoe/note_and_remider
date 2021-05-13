@@ -6,12 +6,14 @@
     app:cardElevation="0dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reminder_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/border_gray"
         android:layout_marginTop="10dp"
         android:paddingTop="6dp"
-        android:paddingBottom="6dp">
+        android:paddingBottom="6dp"
+        android:clickable="true">
 
         <CheckBox
             android:id="@+id/reminder_detail_checkbox"
