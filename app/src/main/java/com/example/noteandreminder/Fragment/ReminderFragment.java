@@ -98,7 +98,11 @@ public class ReminderFragment extends Fragment {
         List<Reminder> child_data = new ArrayList<>();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             child_data.add(new Reminder("Reminder1", "déc", 2, LocalTime.now(), false));
-            child_data.add(new Reminder("Reminder2", "", 1, LocalTime.now(), true));
+            child_data.add(new Reminder("Reminder2", "Nothing just test", 1, LocalTime.now(), true));
+            child_data.add(new Reminder("Reminder3", "What happen if we don't have reminder?", 1, LocalTime.now(), true));
+            child_data.add(new Reminder("Reminder4", null, 3, LocalTime.now(), true));
+            child_data.add(new Reminder("Reminder5", null, 2, LocalTime.now(), true));
+            child_data.add(new Reminder("Reminder6", null, 1, LocalTime.now(), true));
         }
         data.add(new ReminderGroup("Today", child_data));
         data.add(new ReminderGroup("Tomorrow", child_data));

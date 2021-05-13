@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView android:layout_width="match_parent"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="7dp"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="3dp"
-    android:layout_marginRight="3dp"
-    android:background="@drawable/border_bg_gray"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="3dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout android:orientation="vertical"
         android:layout_width="match_parent"
@@ -17,12 +17,12 @@
             android:text="Today"
             android:textColor="@color/teal_200"
             android:layout_marginLeft="4dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="10dp"
             android:textSize="20dp"
-            android:fontFamily="@font/opensans_extrabold"/>
+            android:fontFamily="@font/opensans_bold"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="4dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:layout_marginBottom="8dp"
