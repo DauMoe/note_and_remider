@@ -49,6 +49,7 @@ public class ReminderGroupAdapter extends RecyclerView.Adapter<ReminderGroupAdap
 
     @Override
     public int getItemCount() {
+        if (data != null) return data.size();
         return 0;
     }
 

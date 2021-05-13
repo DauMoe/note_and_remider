@@ -5,19 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 public class ReminderGroup {
-    private LocalDate reminder_date;
+    private String reminder_date;
     private List<Reminder> data;
 
-    public ReminderGroup(LocalDate date, List<Reminder> data) {
+    public ReminderGroup(String date, List<Reminder> data) {
         this.reminder_date = date;
         this.data = data;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return reminder_date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.reminder_date = date;
     }
 

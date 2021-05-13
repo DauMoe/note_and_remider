@@ -78,7 +78,6 @@ public class ReminderFragment extends Fragment {
 
     private RecyclerView reminder_frag;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,19 +86,22 @@ public class ReminderFragment extends Fragment {
         reminder_frag = v.findViewById(R.id.reminder_frag);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         ReminderGroupAdapter adapter = new ReminderGroupAdapter(getContext());
+//        ReminderItemAdapter adapter = new ReminderItemAdapter(getContext());
         reminder_frag.setLayoutManager(manager);
         adapter.setData(fetchRemidnerData());
         reminder_frag.setAdapter(adapter);
         return v;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     private List<ReminderGroup> fetchRemidnerData() {
         List<ReminderGroup> data = new ArrayList<>();
         List<Reminder> child_data = new ArrayList<>();
-        child_data.add(new Reminder("Reminder1", "", 2, LocalTime.now(), false));
-        child_data.add(new Reminder("Reminder2", "", 1, LocalTime.now(), true));
-        data.add(new ReminderGroup(LocalDate.now(), child_data));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            child_data.add(new Reminder("Reminder1", "déc", 2, LocalTime.now(), false));
+            child_data.add(new Reminder("Reminder2", "", 1, LocalTime.now(), true));
+        }
+        data.add(new ReminderGroup("Today", child_data));
         return data;
     }
 }

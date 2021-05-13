@@ -19,6 +19,10 @@ public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapte
     private Context context;
     private List<Reminder> data;
 
+//    public ReminderItemAdapter(Context context) {
+//        this.context = context;
+//    }
+
     public void setData(List<Reminder> x) {
         this.data = x;
         notifyDataSetChanged();
