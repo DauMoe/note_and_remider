@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 //        builder.setTitle("New Reminder!");
         builder.setView(v);
         builder.setCancelable(false);
-        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getApplicationContext(), "Cancel", Toast.LENGTH_LONG).show();
