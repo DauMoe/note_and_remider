@@ -101,6 +101,7 @@ public class ReminderFragment extends Fragment {
             child_data.add(new Reminder("Reminder2", "", 1, LocalTime.now(), true));
         }
         data.add(new ReminderGroup("Today", child_data));
+        data.add(new ReminderGroup("Tomorrow", child_data));
         return data;
     }
 }

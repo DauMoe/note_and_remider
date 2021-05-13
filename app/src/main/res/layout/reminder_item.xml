@@ -7,9 +7,9 @@
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@drawable/border_gray"
-        android:layout_margin="10dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp">
+        android:layout_marginTop="2dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp">
 
         <CheckBox
             android:id="@+id/reminder_detail_checkbox"
