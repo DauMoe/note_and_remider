@@ -1,14 +1,18 @@
 package com.example.noteandreminder;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.example.noteandreminder.Adapter.TabLayoutAdapter;
 import com.example.noteandreminder.Module.ColorCode;
@@ -90,9 +94,36 @@ public class MainActivity extends AppCompatActivity {
         fab_reminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                addReminderDialog();
             }
         });
+    }
+
+    private void addReminderDialog() {
+        LayoutInflater inflater = getLayoutInflater();
+        View v = inflater.inflate(R.layout.create_reminder, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("New Reminder!");
+        builder.setView(v);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "Cancel", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //Create new reminder
+        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "This is a message", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void initVariable() {
