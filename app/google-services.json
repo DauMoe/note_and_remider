@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "454785091625",
+    "firebase_url": "https://noteandreminder-c4618-default-rtdb.firebaseio.com",
+    "project_id": "noteandreminder-c4618",
+    "storage_bucket": "noteandreminder-c4618.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454785091625:android:4e6d08f21290f81c263438",
+        "android_client_info": {
+          "package_name": "com.example.noteandreminder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454785091625-mono8745ns56tsuop19b9jk0nu20sr9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhuEcRcQFKr_gs_FXiWKaOjw9TL1jui7Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454785091625-mono8745ns56tsuop19b9jk0nu20sr9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

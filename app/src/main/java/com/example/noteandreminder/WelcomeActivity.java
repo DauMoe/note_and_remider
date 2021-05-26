@@ -10,9 +10,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class WelcomeActivity extends AppCompatActivity {
-    private static int WELCOME_SCREEN_TIME = 4000; //ms
     private ImageView logo;
+    protected FirebaseUser auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,13 +25,15 @@ public class WelcomeActivity extends AppCompatActivity {
         Animation blink_logo = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink_logo);
 
         logo.startAnimation(blink_logo);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Intent login_intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-//                startActivity(login_intent);
-//                finish();
-//            }
-//        }, WELCOME_SCREEN_TIME);
+        auth = FirebaseAuth.getInstance().getCurrentUser();
+        if (auth == null) {
+            Intent login_intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+            startActivity(login_intent);
+            finish();
+        } else {
+            Intent login_intent = new Intent(WelcomeActivity.this, MainActivity.class);
+            startActivity(login_intent);
+            finish();
+        }
     }
 }
