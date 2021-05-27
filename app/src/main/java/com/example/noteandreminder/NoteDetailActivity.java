@@ -39,7 +39,9 @@ public class NoteDetailActivity extends AppCompatActivity {
     private EditText note_detail_title, note_detail_content;
     public Typeface OpenSans_bold, OpenSans_regular;
     private int selected_themeID = 1;
-    protected DatabaseReference ref = FirebaseDatabase.getInstance().getReference("reminder");;
+    protected Note data;
+    protected boolean isNewNote = true;
+    protected DatabaseReference ref = FirebaseDatabase.getInstance().getReference("note");;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +77,16 @@ public class NoteDetailActivity extends AppCompatActivity {
                     return;
                 }
                 //Write to DB
-                String key = ref.push().getKey();
-                ref.child(key).setValue(new Note(title, content, selected_themeID)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                String key;
+                if (isNewNote) {
+                    key = ref.push().getKey();
+                    System.out.println("New");
+                } else {
+                    key = data.getNote_id();
+                    System.out.println("Edit");
+                }
+                System.out.println(key);
+                ref.child(key).setValue(new Note(key, title, content, selected_themeID)).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_LONG).show();
@@ -115,6 +125,7 @@ public class NoteDetailActivity extends AppCompatActivity {
         //Get Intent Data
         Intent IntentData = getIntent();
         if (IntentData.getStringExtra("state").equals("new")) {
+            isNewNote = true;
             note_detail_title.setText("");
             note_detail_content.setText("");
             note_detail.setBackgroundColor(Color.parseColor(listColor.get(3).getBackgroundColorCode()));
@@ -122,7 +133,8 @@ public class NoteDetailActivity extends AppCompatActivity {
             note_detail_content.setTextColor(Color.parseColor(listColor.get(3).getContentColorCode()));
         }
         if (IntentData.getStringExtra("state").equals("edit")) {
-            Note data = (Note) IntentData.getSerializableExtra("data");
+            isNewNote = false;
+            data = (Note) IntentData.getSerializableExtra("data");
             note_detail_title.setText(data.getNote_title());
             note_detail_content.setText(data.getNote_content());
             note_detail.setBackgroundColor(Color.parseColor(listColor.get(data.getThemeID()).getBackgroundColorCode()));

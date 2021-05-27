@@ -103,23 +103,26 @@ public class ReminderFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         ReminderGroupAdapter adapter = new ReminderGroupAdapter(getContext());
         reminder_frag.setLayoutManager(manager);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                for (DataSnapshot item: snapshot.getChildren()) {
-                    ReminderGroup chid_item = item.getValue(ReminderGroup.class);
-                    list.add(chid_item);
-                }
-                adapter.setData(list);
-                reminder_frag.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        ref.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                list.clear();
+//                for (DataSnapshot item: snapshot.getChildren()) {
+//                    ReminderGroup chid_item = item.getValue(ReminderGroup.class);
+//                    list.add(chid_item);
+//                }
+//                adapter.setData(list);
+//                reminder_frag.setAdapter(adapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
+//            }
+//
+//        });
+        adapter.setData(list);
+        reminder_frag.setAdapter(adapter);
 
         return v;
     }

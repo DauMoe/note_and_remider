@@ -82,8 +82,7 @@ public class NoteFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //init DB
         mDB = FirebaseDatabase.getInstance();
         DatabaseReference ref = mDB.getReference("note");
