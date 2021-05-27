@@ -17,9 +17,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.noteandreminder.Module.ColorCode;
 import com.example.noteandreminder.Module.Note;
+import com.example.noteandreminder.Module.Reminder;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +38,8 @@ public class NoteDetailActivity extends AppCompatActivity {
     private ImageView note_detail_back, note_detail_save, note_detail_theme;
     private EditText note_detail_title, note_detail_content;
     public Typeface OpenSans_bold, OpenSans_regular;
+    private int selected_themeID = 1;
+    protected DatabaseReference ref = FirebaseDatabase.getInstance().getReference("reminder");;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +68,21 @@ public class NoteDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Save note
+                String title = note_detail_title.getText().toString();
+                String content = note_detail_content.getText().toString();
+                if (title.isEmpty() || content.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Title or content can't be empty!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                //Write to DB
+                String key = ref.push().getKey();
+                ref.child(key).setValue(new Note(title, content, selected_themeID)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(NoteDetailActivity.this, MainActivity.class));
+                    }
+                });
             }
         });
     }
@@ -73,7 +96,6 @@ public class NoteDetailActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void initVariable() {
         note_detail_back = findViewById(R.id.note_detail_back);
@@ -124,6 +146,7 @@ public class NoteDetailActivity extends AppCompatActivity {
         note_detail.setBackgroundColor(Color.parseColor(listColor.get(item.getItemId()).getBackgroundColorCode()));
         note_detail_title.setTextColor(Color.parseColor(listColor.get(item.getItemId()).getContentColorCode()));
         note_detail_content.setTextColor(Color.parseColor(listColor.get(item.getItemId()).getContentColorCode()));
+        selected_themeID = item.getItemId();
         return true;
     }
 }

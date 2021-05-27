@@ -3,6 +3,7 @@ package com.example.noteandreminder.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,12 +13,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.noteandreminder.Adapter.ReminderGroupAdapter;
 import com.example.noteandreminder.Adapter.ReminderItemAdapter;
+import com.example.noteandreminder.Module.Note;
 import com.example.noteandreminder.Module.Reminder;
 import com.example.noteandreminder.Module.ReminderGroup;
 import com.example.noteandreminder.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Time;
 import java.time.LocalDate;
@@ -58,6 +66,8 @@ public class ReminderFragment extends Fragment {
      * @return A new instance of fragment ReminderFragment.
      */
     // TODO: Rename and change types and number of parameters
+
+
     public static ReminderFragment newInstance(String param1, String param2) {
         ReminderFragment fragment = new ReminderFragment();
         Bundle args = new Bundle();
@@ -77,35 +87,40 @@ public class ReminderFragment extends Fragment {
     }
 
     private RecyclerView reminder_frag;
+    protected List<ReminderGroup> list = new ArrayList<>();
+    private FirebaseDatabase mDB;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //init DB
+        mDB = FirebaseDatabase.getInstance();
+        DatabaseReference ref = mDB.getReference("reminder");
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_reminder, container, false);
         reminder_frag = v.findViewById(R.id.reminder_frag);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         ReminderGroupAdapter adapter = new ReminderGroupAdapter(getContext());
         reminder_frag.setLayoutManager(manager);
-        adapter.setData(fetchRemidnerData());
-        reminder_frag.setAdapter(adapter);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
+                for (DataSnapshot item: snapshot.getChildren()) {
+                    ReminderGroup chid_item = item.getValue(ReminderGroup.class);
+                    list.add(chid_item);
+                }
+                adapter.setData(list);
+                reminder_frag.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return v;
-    }
-
-
-    private List<ReminderGroup> fetchRemidnerData() {
-        List<ReminderGroup> data = new ArrayList<>();
-        List<Reminder> child_data = new ArrayList<>();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            child_data.add(new Reminder("Reminder1", "déc", 2, LocalTime.now(), false));
-            child_data.add(new Reminder("Reminder2", "Nothing just test", 1, LocalTime.now(), true));
-            child_data.add(new Reminder("Reminder3", "What happen if we don't have reminder?", 1, LocalTime.now(), true));
-            child_data.add(new Reminder("Reminder4", null, 3, LocalTime.now(), true));
-            child_data.add(new Reminder("Reminder5", null, 2, LocalTime.now(), true));
-            child_data.add(new Reminder("Reminder6", null, 1, LocalTime.now(), true));
-        }
-        data.add(new ReminderGroup("Today", child_data));
-        data.add(new ReminderGroup("Tomorrow", child_data));
-        return data;
     }
 }
