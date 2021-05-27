@@ -2,6 +2,7 @@ package com.example.noteandreminder.Fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,10 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.noteandreminder.Adapter.NoteAdapter;
 import com.example.noteandreminder.Module.Note;
 import com.example.noteandreminder.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +68,9 @@ public class NoteFragment extends Fragment {
 
     private RecyclerView note_recycle;
     private NoteAdapter note_adapter;
+    private FirebaseDatabase mDB;
+    private Button test;
+    protected List<Note> list = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,22 +84,42 @@ public class NoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //init DB
+        mDB = FirebaseDatabase.getInstance();
+        DatabaseReference ref = mDB.getReference("note");
+        //Write to DB
+//        mDB = FirebaseDatabase.getInstance().getReference("note");
+//                String key = mDB.push().getKey();
+//                mDB.child(key).setValue(new Note("title1", "this is test content", 1)).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_note, container, false);
         note_recycle = v.findViewById(R.id.note_recycleView);
         note_adapter = new NoteAdapter(getContext());
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         note_recycle.setLayoutManager(manager);
-        note_adapter.setData(fetchListItem());
-        note_recycle.setAdapter(note_adapter);
-        return v;
-    }
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
+                for (DataSnapshot item: snapshot.getChildren()) {
+                    Note chid_item = item.getValue(Note.class);
+                    list.add(chid_item);
+                }
+                note_adapter.setData(list);
+                note_recycle.setAdapter(note_adapter);
+            }
 
-    private List<Note> fetchListItem() {
-        List<Note> list = new ArrayList<>();
-        list.add(new Note("title1", "this is test content", 1));
-        list.add(new Note("title2", "this is test content1", 2));
-        list.add(new Note("title3", "this is test content3", 1));
-        return list;
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return v;
     }
 }

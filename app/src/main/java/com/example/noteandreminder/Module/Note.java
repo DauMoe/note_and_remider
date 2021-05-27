@@ -8,6 +8,9 @@ public class Note implements Serializable {
     private String note_title, note_content;
     private int ThemeID;
 
+    public Note() {
+    }
+
     public Note(String note_title, String note_content, int themeID) {
         this.note_title = note_title;
         this.note_content = note_content;
