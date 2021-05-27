@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static com.google.firebase.auth.FirebaseAuth.getInstance;
+
 public class WelcomeActivity extends AppCompatActivity {
     private ImageView logo;
     protected FirebaseUser auth;
@@ -23,15 +25,25 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
         logo = findViewById(R.id.logo);
         Animation blink_logo = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink_logo);
-
         logo.startAnimation(blink_logo);
-        auth = FirebaseAuth.getInstance().getCurrentUser();
-        if (auth == null) {
-            Intent login_intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-            startActivity(login_intent);
-            finish();
-        } else {
-            Intent login_intent = new Intent(WelcomeActivity.this, MainActivity.class);
+        new CheckUserLogined().start();
+    }
+
+    private class CheckUserLogined extends Thread {
+        @Override
+        public void run() {
+            auth = getInstance().getCurrentUser();
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Intent login_intent;
+            if (auth == null) {
+                login_intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+            } else {
+                login_intent = new Intent(WelcomeActivity.this, MainActivity.class);
+            }
             startActivity(login_intent);
             finish();
         }
