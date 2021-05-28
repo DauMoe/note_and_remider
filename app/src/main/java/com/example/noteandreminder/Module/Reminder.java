@@ -4,17 +4,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Reminder {
-    private String reminder_title, reminder_desc;
-    private int themeID;
-    private LocalTime remind_time;
+    private String reminder_title, reminder_desc, reminder_id, reminder_date, reminder_time;
     private boolean reminder_completed;
 
-    public Reminder(String reminder_title, String reminder_desc, int themeID, LocalTime remind_time, boolean reminder_completed) {
-        this.reminder_title = reminder_title;
-        this.reminder_desc = reminder_desc;
-        this.themeID = themeID;
-        this.remind_time = remind_time;
-        this.reminder_completed = reminder_completed;
+    public Reminder() {
     }
 
     public String getReminder_title() {
@@ -33,20 +26,28 @@ public class Reminder {
         this.reminder_desc = reminder_desc;
     }
 
-    public int getThemeID() {
-        return themeID;
+    public String getReminder_id() {
+        return reminder_id;
     }
 
-    public void setThemeID(int themeID) {
-        this.themeID = themeID;
+    public void setReminder_id(String reminder_id) {
+        this.reminder_id = reminder_id;
     }
 
-    public LocalTime getRemind_time() {
-        return remind_time;
+    public String getReminder_date() {
+        return reminder_date;
     }
 
-    public void setRemind_time(LocalTime remind_time) {
-        this.remind_time = remind_time;
+    public void setReminder_date(String reminder_date) {
+        this.reminder_date = reminder_date;
+    }
+
+    public String getReminder_time() {
+        return reminder_time;
+    }
+
+    public void setReminder_time(String reminder_time) {
+        this.reminder_time = reminder_time;
     }
 
     public boolean isReminder_completed() {
@@ -54,6 +55,15 @@ public class Reminder {
     }
 
     public void setReminder_completed(boolean reminder_completed) {
+        this.reminder_completed = reminder_completed;
+    }
+
+    public Reminder(String reminder_id, String reminder_title, String reminder_desc, String reminder_date, String reminder_time, boolean reminder_completed) {
+        this.reminder_title = reminder_title;
+        this.reminder_desc = reminder_desc;
+        this.reminder_id = reminder_id;
+        this.reminder_date = reminder_date;
+        this.reminder_time = reminder_time;
         this.reminder_completed = reminder_completed;
     }
 }

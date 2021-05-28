@@ -30,33 +30,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/reminder_create_datepicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_calendar" />
-        <TextView
-            android:id="@+id/reminder_create_quickdatepicker_today"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+        <EditText
+            android:id="@+id/reminder_create_datepicker"
+            android:layout_marginLeft="27dp"
+            android:focusable="false"
+            android:hint="Date"
             android:fontFamily="@font/opensans_regular"
-            android:text="Today" />
-
-        <TextView
-            android:id="@+id/reminder_create_quickdatepicker_tomorrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="28dp"
-            android:fontFamily="@font/opensans_regular"
-            android:text="Tomorrow" />
-
-        <TextView
-            android:id="@+id/reminder_create_quickdatepicker_aweek"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="28dp"
-            android:fontFamily="@font/opensans_regular"
-            android:text="A Week" />
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
     </LinearLayout>
     <LinearLayout
         android:gravity="center_vertical"
@@ -68,29 +52,16 @@
             android:src="@drawable/ic_clock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/reminder_create_quicktimepicker_tenmins"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+        <EditText
+            android:id="@+id/reminder_create_timepicker"
+            android:layout_marginLeft="27dp"
+            android:focusable="false"
+            android:hint="Time"
             android:fontFamily="@font/opensans_regular"
-            android:text="10 mins" />
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
 
-        <TextView
-            android:id="@+id/reminder_create_quicktimepicker_halfhour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="28dp"
-            android:fontFamily="@font/opensans_regular"
-            android:text="30 mins" />
 
-        <TextView
-            android:id="@+id/reminder_create_quicktimepicker_onehour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="28dp"
-            android:fontFamily="@font/opensans_regular"
-            android:text="1 hour" />
     </LinearLayout>
 </LinearLayout>
 

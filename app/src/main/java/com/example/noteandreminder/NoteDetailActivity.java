@@ -39,7 +39,7 @@ public class NoteDetailActivity extends AppCompatActivity {
     private EditText note_detail_title, note_detail_content;
     public Typeface OpenSans_bold, OpenSans_regular;
     private int selected_themeID = 1;
-    protected DatabaseReference ref = FirebaseDatabase.getInstance().getReference("reminder");;
+    protected DatabaseReference ref = FirebaseDatabase.getInstance().getReference("note");;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

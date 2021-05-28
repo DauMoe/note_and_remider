@@ -1,9 +1,12 @@
 package com.example.noteandreminder;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,14 +15,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.noteandreminder.Adapter.TabLayoutAdapter;
 import com.example.noteandreminder.Module.ColorCode;
+import com.example.noteandreminder.Module.Reminder;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -31,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     public static Animation rotate_out_fab, rotate_in_fab, to_bottom, to_top;
     private boolean fab_clicked = false;
     public static List<ColorCode> listColor;
+    private int day, month, year, hour, min;
+    protected DatabaseReference ref = FirebaseDatabase.getInstance().getReference("reminder");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +119,46 @@ public class MainActivity extends AppCompatActivity {
         View v = inflater.inflate(R.layout.create_reminder, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 //        builder.setTitle("New Reminder!");
+        EditText reminder_create_datepicker = v.findViewById(R.id.reminder_create_datepicker);
+        EditText reminder_create_timepicker = v.findViewById(R.id.reminder_create_timepicker);
+        EditText reminder_create_title = v.findViewById(R.id.reminder_create_title);
+
+        //Date picker
+        reminder_create_datepicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar c = Calendar.getInstance();
+                day = c.get(Calendar.DAY_OF_MONTH);
+                month = c.get(Calendar.MONTH);
+                year = c.get(Calendar.YEAR);
+                DatePickerDialog datepicker = new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        reminder_create_datepicker.setText(dayOfMonth+"/"+month+"/"+year);
+                    }
+                }, year, month, day);
+                datepicker.show();
+            }
+        });
+
+        //Time picker
+        reminder_create_timepicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar c = Calendar.getInstance();
+                hour = c.get(Calendar.HOUR);
+                min = c.get(Calendar.MINUTE);
+                TimePickerDialog timepicker = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        reminder_create_timepicker.setText(hourOfDay+":"+minute);
+                    }
+                }, hour, min, true);
+                timepicker.show();
+            }
+        });
+
+        //Setup dialog
         builder.setView(v);
         builder.setCancelable(false);
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -117,11 +172,23 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(), "This is a message", Toast.LENGTH_LONG).show();
+                String key = ref.push().getKey();
+                String title = reminder_create_title.getText().toString();
+                String datereminder = reminder_create_datepicker.getText().toString();
+                String timereminder = reminder_create_timepicker.getText().toString();
+                ref.child(key).setValue(new Reminder(key, title, "", datereminder, timereminder, false)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Done!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Create fail!", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    }
+                });
             }
         });
-
-
         AlertDialog dialog = builder.create();
         dialog.show();
     }

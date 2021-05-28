@@ -33,11 +33,11 @@ public class WelcomeActivity extends AppCompatActivity {
         @Override
         public void run() {
             auth = getInstance().getCurrentUser();
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(3000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             Intent login_intent;
             if (auth == null) {
                 login_intent = new Intent(WelcomeActivity.this, LoginActivity.class);

@@ -33,8 +33,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -87,7 +91,9 @@ public class ReminderFragment extends Fragment {
     }
 
     private RecyclerView reminder_frag;
-    protected List<ReminderGroup> list = new ArrayList<>();
+    protected Map<String, List<Reminder>> list = new HashMap<String, List<Reminder>>();
+    protected HashSet<String> temp = new HashSet<>();
+    protected List<ReminderGroup> data = new ArrayList<>();
     private FirebaseDatabase mDB;
 
     @Override
@@ -107,11 +113,25 @@ public class ReminderFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
+                temp.clear();
+                List<Reminder> tempArr = new ArrayList<>();
                 for (DataSnapshot item: snapshot.getChildren()) {
-                    ReminderGroup chid_item = item.getValue(ReminderGroup.class);
-                    list.add(chid_item);
+                    tempArr.clear();
+                    Reminder chid_item = item.getValue(Reminder.class);
+                    if (!temp.contains(chid_item.getReminder_date())) {
+                        temp.add(chid_item.getReminder_date());
+                    } else {
+                        tempArr = list.get(chid_item.getReminder_date());
+                    }
+                    tempArr.add(chid_item);
+                    list.put(chid_item.getReminder_date(), tempArr);
                 }
-                adapter.setData(list);
+                //Convert map to list
+                data.clear();
+                for (Map.Entry<String, List<Reminder>> entry: list.entrySet()) {
+                    data.add(new ReminderGroup(entry.getKey(), entry.getValue()));
+                }
+                adapter.setData(data);
                 reminder_frag.setAdapter(adapter);
             }
 
