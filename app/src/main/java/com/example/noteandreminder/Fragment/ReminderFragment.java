@@ -27,14 +27,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Array;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -86,6 +91,14 @@ public class ReminderFragment extends Fragment {
         }
     }
 
+    public List<Reminder> deepCloneList(List<Reminder> x) {
+        List<Reminder> y = new ArrayList<>();
+        for (Reminder i : x) {
+            y.add(i);
+        }
+        return y;
+    }
+
     private RecyclerView reminder_frag;
     protected List<ReminderGroup> list = new ArrayList<>();
     private FirebaseDatabase mDB;
@@ -103,27 +116,38 @@ public class ReminderFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         ReminderGroupAdapter adapter = new ReminderGroupAdapter(getContext());
         reminder_frag.setLayoutManager(manager);
-//        ref.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                list.clear();
-//                for (DataSnapshot item: snapshot.getChildren()) {
-//                    ReminderGroup chid_item = item.getValue(ReminderGroup.class);
-//                    list.add(chid_item);
-//                }
-//                adapter.setData(list);
-//                reminder_frag.setAdapter(adapter);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
-//            }
-//
-//        });
-        adapter.setData(list);
-        reminder_frag.setAdapter(adapter);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Map<String, List<Reminder>> data = new HashMap<>();
+                List<Reminder> tempArr = new ArrayList<>();
+                for (DataSnapshot item: snapshot.getChildren()) {
+                    tempArr.clear();
+                    Reminder chid_item = item.getValue(Reminder.class);
+                    if (!data.containsKey(chid_item.getReminder_date())) {
+                        tempArr.add(chid_item);
+                        data.put(chid_item.getReminder_date(), deepCloneList(tempArr));
+                    } else {
+                        tempArr = data.get(chid_item.getReminder_date());
+                        tempArr.add(chid_item);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            data.replace(chid_item.getReminder_date(), tempArr);
+                        }
+                    }
+                }
+                //Convert hashmap to list
+                list.clear();
+                for (Map.Entry<String, List<Reminder>> i : data.entrySet()) {
+                    list.add(new ReminderGroup(i.getKey(), i.getValue()));
+                }
+                adapter.setData(list);
+                reminder_frag.setAdapter(adapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
         return v;
     }
 }
