@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.noteandreminder.Adapter.ReminderGroupAdapter;
 import com.example.noteandreminder.Adapter.ReminderItemAdapter;
+import com.example.noteandreminder.GlobalDefine;
 import com.example.noteandreminder.Module.Note;
 import com.example.noteandreminder.Module.Reminder;
 import com.example.noteandreminder.Module.ReminderGroup;
@@ -27,13 +28,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Array;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -90,10 +92,16 @@ public class ReminderFragment extends Fragment {
         }
     }
 
+    public List<Reminder> deepCloneList(List<Reminder> x) {
+        List<Reminder> y = new ArrayList<>();
+        for (Reminder i : x) {
+            y.add(i);
+        }
+        return y;
+    }
+
     private RecyclerView reminder_frag;
-    protected Map<String, List<Reminder>> list = new HashMap<String, List<Reminder>>();
-    protected HashSet<String> temp = new HashSet<>();
-    protected List<ReminderGroup> data = new ArrayList<>();
+    protected List<ReminderGroup> list = new ArrayList<>();
     private FirebaseDatabase mDB;
 
     @Override
@@ -101,7 +109,7 @@ public class ReminderFragment extends Fragment {
                              Bundle savedInstanceState) {
         //init DB
         mDB = FirebaseDatabase.getInstance();
-        DatabaseReference ref = mDB.getReference("reminder");
+        DatabaseReference ref = mDB.getReference(GlobalDefine.REMINDER_DB_PATH);
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_reminder, container, false);
@@ -112,35 +120,35 @@ public class ReminderFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                temp.clear();
+                Map<String, List<Reminder>> data = new HashMap<>();
                 List<Reminder> tempArr = new ArrayList<>();
                 for (DataSnapshot item: snapshot.getChildren()) {
                     tempArr.clear();
                     Reminder chid_item = item.getValue(Reminder.class);
-                    if (!temp.contains(chid_item.getReminder_date())) {
-                        temp.add(chid_item.getReminder_date());
+                    if (!data.containsKey(chid_item.getReminder_date())) {
+                        tempArr.add(chid_item);
+                        data.put(chid_item.getReminder_date(), deepCloneList(tempArr));
                     } else {
-                        tempArr = list.get(chid_item.getReminder_date());
+                        tempArr = data.get(chid_item.getReminder_date());
+                        tempArr.add(chid_item);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            data.replace(chid_item.getReminder_date(), tempArr);
+                        }
                     }
-                    tempArr.add(chid_item);
-                    list.put(chid_item.getReminder_date(), tempArr);
                 }
-                //Convert map to list
-                data.clear();
-                for (Map.Entry<String, List<Reminder>> entry: list.entrySet()) {
-                    data.add(new ReminderGroup(entry.getKey(), entry.getValue()));
+                //Convert hashmap to list
+                list.clear();
+                for (Map.Entry<String, List<Reminder>> i : data.entrySet()) {
+                    list.add(new ReminderGroup(i.getKey(), i.getValue()));
                 }
-                adapter.setData(data);
+                adapter.setData(list);
                 reminder_frag.setAdapter(adapter);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
+
             }
         });
-
         return v;
     }
 }

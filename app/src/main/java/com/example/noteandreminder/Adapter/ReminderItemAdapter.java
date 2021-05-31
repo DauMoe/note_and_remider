@@ -41,7 +41,7 @@ public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapte
         if (item == null) return;
         holder.remider_detail_title.setText(item.getReminder_title());
         holder.reminder_detail_desc.setText(item.getReminder_desc());
-        holder.reminder_detail_time.setText(String.valueOf(item.getReminder_date())+" "+item.getReminder_time());
+        holder.reminder_detail_time.setText(String.valueOf(item.getReminder_time()));
         holder.reminder_detail_completed.setChecked(item.isReminder_completed());
         if (item.isReminder_completed()) {
             holder.remider_detail_title.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);

@@ -1,37 +1,31 @@
 package com.example.noteandreminder;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.ContextMenu;
-import android.view.MenuInflater;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.noteandreminder.Module.ColorCode;
 import com.example.noteandreminder.Module.Note;
-import com.example.noteandreminder.Module.Reminder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import static com.example.noteandreminder.MainActivity.listColor;
+
 
 public class NoteDetailActivity extends AppCompatActivity {
     private ConstraintLayout note_detail;
@@ -39,7 +33,9 @@ public class NoteDetailActivity extends AppCompatActivity {
     private EditText note_detail_title, note_detail_content;
     public Typeface OpenSans_bold, OpenSans_regular;
     private int selected_themeID = 1;
-    protected DatabaseReference ref = FirebaseDatabase.getInstance().getReference("note");;
+    protected Note data;
+    protected boolean isNewNote = true;
+    protected DatabaseReference ref = FirebaseDatabase.getInstance().getReference(GlobalDefine.NOTE_DB_PATH);;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +71,24 @@ public class NoteDetailActivity extends AppCompatActivity {
                     return;
                 }
                 //Write to DB
-                String key = ref.push().getKey();
-                ref.child(key).setValue(new Note(title, content, selected_themeID)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                String key;
+                if (isNewNote) {
+                    key = ref.push().getKey();
+                    System.out.println("New");
+                } else {
+                    key = data.getNote_id();
+                    System.out.println("Edit");
+                }
+                System.out.println(key);
+                ref.child(key).setValue(new Note(key, title, content, selected_themeID)).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(NoteDetailActivity.this, MainActivity.class));
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(NoteDetailActivity.this, MainActivity.class));
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
             }
@@ -115,6 +123,7 @@ public class NoteDetailActivity extends AppCompatActivity {
         //Get Intent Data
         Intent IntentData = getIntent();
         if (IntentData.getStringExtra("state").equals("new")) {
+            isNewNote = true;
             note_detail_title.setText("");
             note_detail_content.setText("");
             note_detail.setBackgroundColor(Color.parseColor(listColor.get(3).getBackgroundColorCode()));
@@ -122,7 +131,8 @@ public class NoteDetailActivity extends AppCompatActivity {
             note_detail_content.setTextColor(Color.parseColor(listColor.get(3).getContentColorCode()));
         }
         if (IntentData.getStringExtra("state").equals("edit")) {
-            Note data = (Note) IntentData.getSerializableExtra("data");
+            isNewNote = false;
+            data = (Note) IntentData.getSerializableExtra("data");
             note_detail_title.setText(data.getNote_title());
             note_detail_content.setText(data.getNote_content());
             note_detail.setBackgroundColor(Color.parseColor(listColor.get(data.getThemeID()).getBackgroundColorCode()));
@@ -135,7 +145,7 @@ public class NoteDetailActivity extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.setHeaderTitle("Choose theme!");
-        for (int i=0; i<listColor.size(); i++) {
+        for (int i = 0; i< listColor.size(); i++) {
             menu.add(0, listColor.get(i).getID(), 0,listColor.get(i).getNameColor());
         }
     }

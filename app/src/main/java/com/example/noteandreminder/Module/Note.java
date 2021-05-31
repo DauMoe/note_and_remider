@@ -5,16 +5,18 @@ import android.widget.TextView;
 import java.io.Serializable;
 
 public class Note implements Serializable {
-    private String note_title, note_content;
+    private String note_id, note_title, note_content;
     private int ThemeID;
 
     public Note() {
     }
 
-    public Note(String note_title, String note_content, int themeID) {
-        this.note_title = note_title;
-        this.note_content = note_content;
-        ThemeID = themeID;
+    public String getNote_id() {
+        return note_id;
+    }
+
+    public void setNote_id(String note_id) {
+        this.note_id = note_id;
     }
 
     public String getNote_title() {
@@ -38,6 +40,13 @@ public class Note implements Serializable {
     }
 
     public void setThemeID(int themeID) {
+        ThemeID = themeID;
+    }
+
+    public Note(String note_id, String note_title, String note_content, int themeID) {
+        this.note_id = note_id;
+        this.note_title = note_title;
+        this.note_content = note_content;
         ThemeID = themeID;
     }
 }

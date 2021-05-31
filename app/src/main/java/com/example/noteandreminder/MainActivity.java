@@ -41,19 +41,24 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager main_viewpager;
     private TabLayoutAdapter adapter;
     private FloatingActionButton main_fab, fab_note, fab_reminder;
-    public static Animation rotate_out_fab, rotate_in_fab, to_bottom, to_top;
     private boolean fab_clicked = false;
+
+    //List color code
     public static List<ColorCode> listColor;
     private int day, month, year, hour, min;
     protected DatabaseReference ref = FirebaseDatabase.getInstance().getReference("reminder");
+
+    //Animation
+    public static Animation rotate_out_fab, rotate_in_fab, to_bottom, to_top;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initColor();
-        initVariable();
         initAnimation();
+        initVariable();
         hanldingFABEvemt();
     }
 
