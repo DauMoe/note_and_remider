@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.noteandreminder.Adapter.ReminderGroupAdapter;
 import com.example.noteandreminder.Adapter.ReminderItemAdapter;
+import com.example.noteandreminder.GlobalDefine;
 import com.example.noteandreminder.Module.Note;
 import com.example.noteandreminder.Module.Reminder;
 import com.example.noteandreminder.Module.ReminderGroup;
@@ -108,7 +109,7 @@ public class ReminderFragment extends Fragment {
                              Bundle savedInstanceState) {
         //init DB
         mDB = FirebaseDatabase.getInstance();
-        DatabaseReference ref = mDB.getReference("reminder");
+        DatabaseReference ref = mDB.getReference(GlobalDefine.REMINDER_DB_PATH);
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_reminder, container, false);
