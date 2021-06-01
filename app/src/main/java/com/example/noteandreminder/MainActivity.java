@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.noteandreminder.Adapter.TabLayoutAdapter;
 import com.example.noteandreminder.Module.ColorCode;
 import com.example.noteandreminder.Module.Reminder;
+import com.example.noteandreminder.Services.ReminderTimer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayoutAdapter adapter;
     private FloatingActionButton main_fab, fab_note, fab_reminder;
     private boolean fab_clicked = false;
+    private ReminderTimer R_timer;
 
     //List color code
     public static List<ColorCode> listColor;
@@ -181,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 String title = reminder_create_title.getText().toString();
                 String datereminder = reminder_create_datepicker.getText().toString();
                 String timereminder = reminder_create_timepicker.getText().toString();
-                ref.child(key).setValue(new Reminder(key, title, "", datereminder, timereminder, false)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                ref.child(key).setValue(new Reminder(key, title, "", datereminder, timereminder, 1, false)).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -204,6 +206,10 @@ public class MainActivity extends AppCompatActivity {
         main_fab = findViewById(R.id.main_fab);
         fab_note = findViewById(R.id.fab_notes);
         fab_reminder = findViewById(R.id.fab_reminder);
+
+        //Background services
+        R_timer = new ReminderTimer();
+        startService(new Intent(MainActivity.this, ReminderTimer.class));
 
         //setup viewpager
         adapter = new TabLayoutAdapter(getSupportFragmentManager(), TabLayoutAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);

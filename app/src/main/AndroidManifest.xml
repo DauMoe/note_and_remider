@@ -22,6 +22,7 @@
             </intent-filter>
         </activity> <!-- android:windowSoftInputMode="adjustResize" -->
         <activity android:name=".LoginActivity"></activity>
+        <service android:name=".Services.ReminderTimer" android:enabled="true"/>
     </application>
 
 </manifest>
