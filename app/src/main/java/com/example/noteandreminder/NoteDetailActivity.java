@@ -32,7 +32,7 @@ public class NoteDetailActivity extends AppCompatActivity {
     private ImageView note_detail_back, note_detail_save, note_detail_theme;
     private EditText note_detail_title, note_detail_content;
     public Typeface OpenSans_bold, OpenSans_regular;
-    private int selected_themeID = 1;
+    private int selected_themeID;
     protected Note data;
     protected boolean isNewNote = true;
     protected DatabaseReference ref = FirebaseDatabase.getInstance().getReference(GlobalDefine.NOTE_DB_PATH);;
@@ -124,6 +124,7 @@ public class NoteDetailActivity extends AppCompatActivity {
         Intent IntentData = getIntent();
         if (IntentData.getStringExtra("state").equals("new")) {
             isNewNote = true;
+            selected_themeID = 4;
             note_detail_title.setText("");
             note_detail_content.setText("");
             note_detail.setBackgroundColor(Color.parseColor(listColor.get(3).getBackgroundColorCode()));
@@ -133,6 +134,8 @@ public class NoteDetailActivity extends AppCompatActivity {
         if (IntentData.getStringExtra("state").equals("edit")) {
             isNewNote = false;
             data = (Note) IntentData.getSerializableExtra("data");
+            selected_themeID = data.getThemeID();
+            System.out.println(selected_themeID);
             note_detail_title.setText(data.getNote_title());
             note_detail_content.setText(data.getNote_content());
             note_detail.setBackgroundColor(Color.parseColor(listColor.get(data.getThemeID()).getBackgroundColorCode()));
