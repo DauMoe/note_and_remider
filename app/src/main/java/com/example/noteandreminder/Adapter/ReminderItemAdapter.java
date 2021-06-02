@@ -28,6 +28,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapter.ReminderItemViewHolder> {
@@ -52,7 +57,17 @@ public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapte
         if (item == null) return;
         holder.remider_detail_title.setText(item.getReminder_title());
         holder.reminder_detail_desc.setText(item.getReminder_desc());
-        holder.reminder_detail_time.setText(String.valueOf(item.getReminder_time()));
+
+        //Display time
+        DateFormat sdf = new SimpleDateFormat("kk:mm");
+        try {
+            Date date = sdf.parse(item.getReminder_time());
+            holder.reminder_detail_time.setText(sdf.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //Checkbox
         holder.reminder_detail_completed.setChecked(item.isReminder_completed());
         if (item.isReminder_completed()) {
             holder.remider_detail_title.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
@@ -70,9 +85,7 @@ public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapte
                 }
                 ref.child(item.getReminder_id()).setValue(new Reminder(item.getReminder_id(), item.getReminder_title(), item.getReminder_desc(), item.getReminder_date(), item.getReminder_time(), item.getThemeID(), isChecked)).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                    }
+                    public void onComplete(@NonNull Task<Void> task) {}
                 });
             }
         });
@@ -87,11 +100,9 @@ public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapte
     public class ReminderItemViewHolder extends RecyclerView.ViewHolder {
         private TextView remider_detail_title, reminder_detail_desc, reminder_detail_time;
         private CheckBox reminder_detail_completed;
-        private ConstraintLayout reminder_detail;
 
         public ReminderItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            reminder_detail = itemView.findViewById(R.id.reminder_detail);
             remider_detail_title = itemView.findViewById(R.id.reminder_detail_title);
             reminder_detail_desc = itemView.findViewById(R.id.reminder_detail_desc);
             reminder_detail_completed = itemView.findViewById(R.id.reminder_detail_checkbox);
