@@ -1,6 +1,7 @@
 package com.example.noteandreminder.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
@@ -10,18 +11,28 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.noteandreminder.GlobalDefine;
+import com.example.noteandreminder.MainActivity;
+import com.example.noteandreminder.Module.Note;
 import com.example.noteandreminder.Module.Reminder;
+import com.example.noteandreminder.NoteDetailActivity;
 import com.example.noteandreminder.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
 public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapter.ReminderItemViewHolder> {
     private List<Reminder> data;
+    private DatabaseReference ref = FirebaseDatabase.getInstance().getReference(GlobalDefine.REMINDER_DB_PATH);
 
     public void setData(List<Reminder> x) {
         this.data = x;
@@ -57,6 +68,12 @@ public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapte
                     holder.remider_detail_title.setPaintFlags(Paint.LINEAR_TEXT_FLAG);
                     holder.reminder_detail_desc.setPaintFlags(Paint.LINEAR_TEXT_FLAG);
                 }
+                ref.child(item.getReminder_id()).setValue(new Reminder(item.getReminder_id(), item.getReminder_title(), item.getReminder_desc(), item.getReminder_date(), item.getReminder_time(), item.getThemeID(), isChecked)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                    }
+                });
             }
         });
     }
