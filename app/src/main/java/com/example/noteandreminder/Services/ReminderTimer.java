@@ -4,6 +4,7 @@ package com.example.noteandreminder.Services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.text.format.DateUtils;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,20 +29,43 @@ import java.util.TimerTask;
 
 public class ReminderTimer extends Service {
 //    Doc: https://stackoverflow.com/questions/30525784/android-keep-service-running-when-app-is-killed
-    public static final long DELAY_TIMER = 30000L; //ms ~3s
+    public static final long DELAY_TIMER = 30000L; //ms ~ 3s
     private DatabaseReference ref = FirebaseDatabase.getInstance().getReference(GlobalDefine.REMINDER_DB_PATH);
     private Map<String, String> timeStamp = new HashMap<>();
     private Calendar c = Calendar.getInstance();
+    private SimpleDateFormat formatter = new SimpleDateFormat("kk:mm"); //24-hour format
 
     private TimerTask timerTask = new TimerTask() {
         @Override
         public void run() {
             //Check here
-            String currentTime = c.get(Calendar.HOUR) + ":"+ c.get(Calendar.MINUTE);
-            System.out.println(currentTime);
-            if (timeStamp.containsKey(currentTime)) {
-                Toast.makeText(getApplicationContext(), timeStamp.get(currentTime), Toast.LENGTH_LONG).show();
-            }
+            Date now = new Date();
+//            try {
+//                if (formatter.parse(String.valueOf(now)).compareTo((formatter).parse()) == 0) {}
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+
+
+//            List<String> listTime = new ArrayList<>();
+//            listTime.add("14:58");
+//            listTime.add("15:0");
+//            listTime.add("15:01");
+//            listTime.add("15:03");
+//            listTime.add("16:30");
+//
+//            DateFormat formatter = new SimpleDateFormat("kk:mm");
+//            Date now, temp;
+//            Timer timer = new Timer();
+//
+//            for (String i: listTime) {
+//                now = new Date();
+//                temp = formatter.parse(i);
+//                System.out.println(temp.getTime() - now .getTime());
+//            if (formatter.format(temp).compareTo(formatter.format(now)) == 0) {
+//                System.out.println(formatter.format(temp));
+//            }
+//            }
         }
     };
 
