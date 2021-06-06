@@ -19,4 +19,7 @@ public class GlobalDefine {
 
     //Service
     public static final String REMINDER = "check_reminder_task";
+
+    //Noti
+    public static final String ALARM_NOTI_ID = "background_alarm_noti";
 }
