@@ -29,63 +29,42 @@ import java.util.TimerTask;
 
 public class ReminderTimer extends Service {
 //    Doc: https://stackoverflow.com/questions/30525784/android-keep-service-running-when-app-is-killed
-    public static final long DELAY_TIMER = 30000L; //ms ~ 3s
     private DatabaseReference ref = FirebaseDatabase.getInstance().getReference(GlobalDefine.REMINDER_DB_PATH);
     private Map<String, String> timeStamp = new HashMap<>();
     private Calendar c = Calendar.getInstance();
-    private SimpleDateFormat formatter = new SimpleDateFormat("kk:mm"); //24-hour format
-
-    private TimerTask timerTask = new TimerTask() {
-        @Override
-        public void run() {
-            //Check here
-            Date now = new Date();
-//            try {
-//                if (formatter.parse(String.valueOf(now)).compareTo((formatter).parse()) == 0) {}
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-
-
-//            List<String> listTime = new ArrayList<>();
-//            listTime.add("14:58");
-//            listTime.add("15:0");
-//            listTime.add("15:01");
-//            listTime.add("15:03");
-//            listTime.add("16:30");
-//
-//            DateFormat formatter = new SimpleDateFormat("kk:mm");
-//            Date now, temp;
-//            Timer timer = new Timer();
-//
-//            for (String i: listTime) {
-//                now = new Date();
-//                temp = formatter.parse(i);
-//                System.out.println(temp.getTime() - now .getTime());
-//            if (formatter.format(temp).compareTo(formatter.format(now)) == 0) {
-//                System.out.println(formatter.format(temp));
-//            }
-//            }
-        }
-    };
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy kk:mm:ss"); //24-hour format
+    private Date now, time_stamp;
 
     @Override
     public void onCreate() {
+        System.out.println("=============== START SERVICES =============");
         super.onCreate();
         readDB();
-        if (timeStamp.size()>0) startTimer();
     }
 
     private void readDB() {
         timeStamp.clear();
         //Query all event TODAY
-        String today = c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.MONTH) + "/" + c.get(Calendar.YEAR);
-        ref.orderByChild(today).addValueEventListener(new ValueEventListener() {
+        String today = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH)+1) + "/" + c.get(Calendar.YEAR);
+        System.out.println("+++++++ TODAY: "+today + " ++++++++++++");
+        ref.orderByChild("reminder_date").equalTo(today).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                now = new Date();
+                System.out.println("++++++++++++ NOW: "+now+" +++++++++++++++");
                 for (DataSnapshot item: snapshot.getChildren()) {
                     Reminder chid_item = item.getValue(Reminder.class);
-                    timeStamp.put(chid_item.getReminder_time(), chid_item.getReminder_title());
+                    System.out.println(chid_item.getReminder_date());
+                    try {
+                        time_stamp = formatter.parse(today+" "+chid_item.getReminder_time()+":00");
+                        System.out.println("++++++++++++++ TIME STAMP: "+time_stamp+" +++++++++++++++++");
+                        if (time_stamp.getTime()>now.getTime()) {
+                            System.out.println("======================== "+time_stamp+" ========================");
+                            new Timer().schedule(new Alarm(getApplicationContext(), String.valueOf(today+" "+chid_item.getReminder_time()+":00")), time_stamp.getTime()-now.getTime());
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -94,11 +73,6 @@ public class ReminderTimer extends Service {
 
             }
         });
-    }
-
-    private void startTimer() {
-        Timer timer = new Timer(GlobalDefine.REMINDER);
-        timer.schedule(timerTask, 0, DELAY_TIMER);
     }
 
     @Nullable
