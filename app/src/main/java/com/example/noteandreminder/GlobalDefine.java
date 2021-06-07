@@ -22,4 +22,7 @@ public class GlobalDefine {
 
     //Noti
     public static final String ALARM_NOTI_ID = "background_alarm_noti";
+
+    //For Debug only
+    public static final String TAG = "main_log";
 }

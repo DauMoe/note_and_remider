@@ -39,10 +39,11 @@ public class ReminderTimer extends Service {
     public void onCreate() {
         System.out.println("=============== START SERVICES =============");
         super.onCreate();
-        readDB();
     }
 
-    private void readDB() {
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
         timeStamp.clear();
         //Query all event TODAY
         String today = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH)+1) + "/" + c.get(Calendar.YEAR);
@@ -73,6 +74,7 @@ public class ReminderTimer extends Service {
 
             }
         });
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Nullable

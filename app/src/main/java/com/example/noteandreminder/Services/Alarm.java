@@ -1,15 +1,19 @@
 package com.example.noteandreminder.Services;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.noteandreminder.GlobalDefine;
+import com.example.noteandreminder.MainActivity;
 import com.example.noteandreminder.R;
 
 import java.util.TimerTask;
@@ -28,14 +32,20 @@ public class Alarm extends TimerTask {
 
     @Override
     public void run() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, ALARM_NOTI_ID)
+        Log.v(GlobalDefine.TAG, "Say hi");
+        Intent mainIntent = new Intent(context, MainActivity.class);
+        Notification noti = new Notification.Builder(context)
+                .setAutoCancel(true)
+                .setContentIntent(PendingIntent.getActivity(context, 131314, mainIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT))
+                .setContentTitle("We Miss You!")
+                .setContentText("Please play our game again soon.")
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setSmallIcon(R.drawable.ic_calendar)
-                .setContentTitle("It's time!")
-                .setContentText(noti_content)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText("Much longer text that cannot fit one line..."))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true);
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(1000, builder.build());
+                .setTicker("We Miss You! Please come back and play our game again soon.")
+//                .setWhen(System.currentTimeMillis())
+                .build();
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(131315, noti);
     }
 }
