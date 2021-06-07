@@ -37,17 +37,14 @@ public class ReminderTimer extends Service {
 
     @Override
     public void onCreate() {
-        System.out.println("=============== START SERVICES =============");
         super.onCreate();
     }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         timeStamp.clear();
         //Query all event TODAY
         String today = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH)+1) + "/" + c.get(Calendar.YEAR);
-        System.out.println("+++++++ TODAY: "+today + " ++++++++++++");
         ref.orderByChild("reminder_date").equalTo(today).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -55,13 +52,10 @@ public class ReminderTimer extends Service {
                 System.out.println("++++++++++++ NOW: "+now+" +++++++++++++++");
                 for (DataSnapshot item: snapshot.getChildren()) {
                     Reminder chid_item = item.getValue(Reminder.class);
-                    System.out.println(chid_item.getReminder_date());
                     try {
                         time_stamp = formatter.parse(today+" "+chid_item.getReminder_time()+":00");
-                        System.out.println("++++++++++++++ TIME STAMP: "+time_stamp+" +++++++++++++++++");
                         if (time_stamp.getTime()>now.getTime()) {
-                            System.out.println("======================== "+time_stamp+" ========================");
-                            new Timer().schedule(new Alarm(getApplicationContext(), String.valueOf(today+" "+chid_item.getReminder_time()+":00")), time_stamp.getTime()-now.getTime());
+                            new Timer().schedule(new Alarm(getApplicationContext(), chid_item), time_stamp.getTime()-now.getTime());
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();

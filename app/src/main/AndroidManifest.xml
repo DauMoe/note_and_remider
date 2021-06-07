@@ -9,11 +9,11 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Noteandreminder">
-
+        <activity android:name=".TimeupActivity"></activity>
         <activity
             android:name=".NoteDetailActivity"
-            android:windowSoftInputMode="adjustNothing"></activity>
-        <activity android:name=".MainActivity"></activity>
+            android:windowSoftInputMode="adjustNothing" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,8 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- android:windowSoftInputMode="adjustResize" -->
-        <activity android:name=".LoginActivity"></activity>
-        <service android:name=".Services.ReminderTimer" android:enabled="true"/>
+        <activity android:name=".LoginActivity" />
+
+        <service
+            android:name=".Services.ReminderTimer"
+            android:enabled="true" />
     </application>
 
 </manifest>

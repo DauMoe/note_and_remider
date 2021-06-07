@@ -1,5 +1,7 @@
 package com.example.noteandreminder.Fragment;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.noteandreminder.Adapter.NoteAdapter;
@@ -24,6 +27,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,6 +73,7 @@ public class NoteFragment extends Fragment {
     private NoteAdapter note_adapter;
     private FirebaseDatabase mDB;
     protected List<Note> list = new ArrayList<>();
+//    private Button test;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,18 +89,16 @@ public class NoteFragment extends Fragment {
         //init DB
         mDB = FirebaseDatabase.getInstance();
         DatabaseReference ref = mDB.getReference(GlobalDefine.NOTE_DB_PATH);
-        //Write to DB
-//        mDB = FirebaseDatabase.getInstance().getReference("note");
-//                String key = mDB.push().getKey();
-//                mDB.child(key).setValue(new Note("title1", "this is test content", 1)).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_note, container, false);
+//        test = v.findViewById(R.id.test);
+//        test.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
         note_recycle = v.findViewById(R.id.note_recycleView);
         note_adapter = new NoteAdapter(getContext());
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);

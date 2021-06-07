@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         EditText reminder_create_datepicker = v.findViewById(R.id.reminder_create_datepicker);
         EditText reminder_create_timepicker = v.findViewById(R.id.reminder_create_timepicker);
         EditText reminder_create_title = v.findViewById(R.id.reminder_create_title);
+        EditText reminder_create_desc = v.findViewById(R.id.reminder_create_desc);
 
         //Date picker
         reminder_create_datepicker.setOnClickListener(new View.OnClickListener() {
@@ -181,9 +182,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String key = ref.push().getKey();
                 String title = reminder_create_title.getText().toString();
+                String desc = reminder_create_desc.getText().toString();
                 String datereminder = reminder_create_datepicker.getText().toString();
                 String timereminder = reminder_create_timepicker.getText().toString();
-                ref.child(key).setValue(new Reminder(key, title, "", datereminder, timereminder, 1, false)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                ref.child(key).setValue(new Reminder(key, title, desc, datereminder, timereminder, 1, false)).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {

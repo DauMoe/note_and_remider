@@ -1,9 +1,10 @@
 package com.example.noteandreminder.Module;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class Reminder {
+public class Reminder implements Serializable {
     private String reminder_id, reminder_title, reminder_desc, reminder_date, reminder_time;
     private int themeID;
     private boolean reminder_completed;
