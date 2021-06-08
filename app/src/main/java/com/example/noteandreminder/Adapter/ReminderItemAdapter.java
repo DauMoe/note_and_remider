@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +35,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static com.example.noteandreminder.MainActivity.listColor;
 
 public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapter.ReminderItemViewHolder> {
     private List<Reminder> data;
@@ -57,6 +60,9 @@ public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapte
         if (item == null) return;
         holder.remider_detail_title.setText(item.getReminder_title());
         holder.reminder_detail_desc.setText(item.getReminder_desc());
+        holder.reminder_detail.setBackgroundColor(Color.parseColor(listColor.get(item.getThemeID()).getBackgroundColorCode()));
+        holder.remider_detail_title.setTextColor(Color.parseColor(listColor.get(item.getThemeID()).getContentColorCode()));
+        holder.reminder_detail_desc.setTextColor(Color.parseColor(listColor.get(item.getThemeID()).getContentColorCode()));
 
         //Display time
         DateFormat sdf = new SimpleDateFormat("kk:mm");
@@ -100,9 +106,11 @@ public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapte
     public class ReminderItemViewHolder extends RecyclerView.ViewHolder {
         private TextView remider_detail_title, reminder_detail_desc, reminder_detail_time;
         private CheckBox reminder_detail_completed;
+        private ConstraintLayout reminder_detail;
 
         public ReminderItemViewHolder(@NonNull View itemView) {
             super(itemView);
+            reminder_detail = itemView.findViewById(R.id.reminder_detail);
             remider_detail_title = itemView.findViewById(R.id.reminder_detail_title);
             reminder_detail_desc = itemView.findViewById(R.id.reminder_detail_desc);
             reminder_detail_completed = itemView.findViewById(R.id.reminder_detail_checkbox);
