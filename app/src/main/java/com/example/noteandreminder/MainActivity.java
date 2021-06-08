@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 DatePickerDialog datepicker = new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        reminder_create_datepicker.setText(dayOfMonth+"/"+month+"/"+year);
+                        reminder_create_datepicker.setText(dayOfMonth+"/"+(month+1)+"/"+year);
                     }
                 }, year, month, day);
                 datepicker.show();
