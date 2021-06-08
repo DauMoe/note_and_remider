@@ -16,7 +16,6 @@
         android:layout_height="wrap_content">
         <TextView
             android:text="This is title!"
-            android:textColor="@color/black"
             android:fontFamily="@font/opensans_bold"
             android:textSize="25dp"
             android:id="@+id/note_preview_title"
