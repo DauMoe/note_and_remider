@@ -32,7 +32,8 @@ public class TimeupActivity extends AppCompatActivity {
         timeup_desc = findViewById(R.id.timeup_desc);
 
         timeup_title.setText(String.valueOf(data.getReminder_title()));
-
+        timeup_desc.setText(String.valueOf(data.getReminder_desc()));
+//        timeup_title.setText("This is title");
         timeup_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
