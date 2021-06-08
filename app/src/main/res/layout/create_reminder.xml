@@ -36,7 +36,6 @@
         <EditText
             android:id="@+id/reminder_create_desc"
             android:layout_marginLeft="27dp"
-            android:focusable="false"
             android:hint="Desc"
             android:fontFamily="@font/opensans_regular"
             android:layout_width="match_parent"

@@ -132,7 +132,7 @@ public class ReminderFragment extends Fragment {
                         tempArr = data.get(chid_item.getReminder_date());
                         tempArr.add(chid_item);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            data.replace(chid_item.getReminder_date(), tempArr);
+                            data.replace(chid_item.getReminder_date(), deepCloneList(tempArr));
                         }
                     }
                 }
