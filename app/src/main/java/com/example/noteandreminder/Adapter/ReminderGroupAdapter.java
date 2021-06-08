@@ -13,11 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.noteandreminder.Module.ReminderGroup;
 import com.example.noteandreminder.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class ReminderGroupAdapter extends RecyclerView.Adapter<ReminderGroupAdapter.ReminderGroupViewHolder> {
     private Context context;
     private List<ReminderGroup> data;
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
     public ReminderGroupAdapter(Context context) {
         this.context = context;
@@ -39,7 +42,11 @@ public class ReminderGroupAdapter extends RecyclerView.Adapter<ReminderGroupAdap
     public void onBindViewHolder(@NonNull ReminderGroupViewHolder holder, int position) {
         ReminderGroup item = data.get(position);
         if(item == null) return;
-        holder.reminder_group_date.setText(String.valueOf(item.getDate()));
+        try {
+            holder.reminder_group_date.setText(String.valueOf(formatter.format(formatter.parse(item.getDate()))));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         ReminderItemAdapter adapter = new ReminderItemAdapter();
         LinearLayoutManager manager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         holder.reminder_group_content.setLayoutManager(manager);
