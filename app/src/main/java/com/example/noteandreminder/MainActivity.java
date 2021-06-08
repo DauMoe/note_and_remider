@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         listColor.add(new ColorCode(1, "Yellow", "#FFEDAD", "#D6691A"));
         listColor.add(new ColorCode(2, "Blue", "#A3F8FD", "#167BD9"));
         listColor.add(new ColorCode(3, "White", "#FFFFFF", "#45415F"));
+        listColor.add(new ColorCode(4, "Purple", "#DCA1DB", "#750573"));
+        listColor.add(new ColorCode(5, "Green", "#73ECD0", "#03785D"));
     }
 
     private void initAnimation() {
