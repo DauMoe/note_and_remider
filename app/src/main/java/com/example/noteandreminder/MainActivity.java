@@ -15,9 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayoutAdapter adapter;
     private FloatingActionButton main_fab, fab_note, fab_reminder;
     private boolean fab_clicked = false;
-    private ReminderTimer R_timer;
+    private int selectedThemeID=0;
 
     //List color code
     public static List<ColorCode> listColor;
@@ -127,11 +130,30 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View v = inflater.inflate(R.layout.create_reminder, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("New Reminder!");
         EditText reminder_create_datepicker = v.findViewById(R.id.reminder_create_datepicker);
         EditText reminder_create_timepicker = v.findViewById(R.id.reminder_create_timepicker);
         EditText reminder_create_title = v.findViewById(R.id.reminder_create_title);
         EditText reminder_create_desc = v.findViewById(R.id.reminder_create_desc);
+        Spinner reminder_create_theme = v.findViewById(R.id.reminder_create_theme);
+        List<String> theme_color = new ArrayList<>();
+        for (ColorCode i: listColor) {
+            theme_color.add(i.getNameColor());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, theme_color);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        reminder_create_theme.setAdapter(adapter);
+
+        reminder_create_theme.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedThemeID = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         //Date picker
         reminder_create_datepicker.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                 String desc = reminder_create_desc.getText().toString();
                 String datereminder = reminder_create_datepicker.getText().toString();
                 String timereminder = reminder_create_timepicker.getText().toString();
-                ref.child(key).setValue(new Reminder(key, title, desc, datereminder, timereminder, 1, false)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                ref.child(key).setValue(new Reminder(key, title, desc, datereminder, timereminder, selectedThemeID, false)).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -212,7 +234,6 @@ public class MainActivity extends AppCompatActivity {
         fab_reminder = findViewById(R.id.fab_reminder);
 
         //Background services
-        R_timer = new ReminderTimer();
         startService(new Intent(MainActivity.this, ReminderTimer.class));
 
         //setup viewpager

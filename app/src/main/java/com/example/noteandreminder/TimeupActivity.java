@@ -1,8 +1,10 @@
 package com.example.noteandreminder;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.os.Bundle;
@@ -13,11 +15,14 @@ import android.widget.TextView;
 import com.example.noteandreminder.Module.Note;
 import com.example.noteandreminder.Module.Reminder;
 
+import static com.example.noteandreminder.MainActivity.listColor;
+
 public class TimeupActivity extends AppCompatActivity {
     private Ringtone tone;
     private Button timeup_stop;
     private TextView timeup_title, timeup_desc;
     private Reminder data;
+    private ConstraintLayout timeup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,11 @@ public class TimeupActivity extends AppCompatActivity {
         timeup_stop = findViewById(R.id.timeup_stop);
         timeup_title = findViewById(R.id.timeup_title);
         timeup_desc = findViewById(R.id.timeup_desc);
+        timeup = findViewById(R.id.timeup);
+
+        timeup.setBackgroundColor(Color.parseColor(listColor.get(data.getThemeID()).getBackgroundColorCode()));
+        timeup_title.setTextColor(Color.parseColor(listColor.get(data.getThemeID()).getContentColorCode()));
+        timeup_desc.setTextColor(Color.parseColor(listColor.get(data.getThemeID()).getContentColorCode()));
 
         timeup_title.setText(String.valueOf(data.getReminder_title()));
         timeup_desc.setText(String.valueOf(data.getReminder_desc()));

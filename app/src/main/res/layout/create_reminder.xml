@@ -78,8 +78,22 @@
             android:fontFamily="@font/opensans_regular"
             android:layout_width="match_parent"
             android:layout_height="40dp"/>
-
-
+    </LinearLayout>
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Spinner
+            android:layout_marginLeft="27dp"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:id="@+id/reminder_create_theme"/>
     </LinearLayout>
 </LinearLayout>
 
