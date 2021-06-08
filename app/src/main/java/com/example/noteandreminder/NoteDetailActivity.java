@@ -124,7 +124,7 @@ public class NoteDetailActivity extends AppCompatActivity {
         Intent IntentData = getIntent();
         if (IntentData.getStringExtra("state").equals("new")) {
             isNewNote = true;
-            selected_themeID = 4;
+            selected_themeID = 3;
             note_detail_title.setText("");
             note_detail_content.setText("");
             note_detail.setBackgroundColor(Color.parseColor(listColor.get(3).getBackgroundColorCode()));
