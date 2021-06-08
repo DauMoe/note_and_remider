@@ -2,10 +2,12 @@ package com.example.noteandreminder.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,8 @@ import com.example.noteandreminder.NoteDetailActivity;
 import com.example.noteandreminder.R;
 
 import java.util.List;
+
+import static com.example.noteandreminder.MainActivity.listColor;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
     private List<Note> data;
@@ -47,6 +51,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         if (note_preview_item == null) return;
         holder.note_preview_title.setText(note_preview_item.getNote_title());
         holder.note_preview_content.setText(note_preview_item.getNote_content());
+        holder.note_preview.setBackgroundColor(Color.parseColor(listColor.get(note_preview_item.getThemeID()).getBackgroundColorCode()));
+        holder.note_preview_title.setTextColor(Color.parseColor(listColor.get(note_preview_item.getThemeID()).getContentColorCode()));
+        holder.note_preview_content.setTextColor(Color.parseColor(listColor.get(note_preview_item.getThemeID()).getContentColorCode()));
         holder.note_preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
