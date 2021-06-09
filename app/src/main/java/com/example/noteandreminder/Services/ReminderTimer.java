@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,12 +50,12 @@ public class ReminderTimer extends Service {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 now = new Date();
-                System.out.println("++++++++++++ NOW: "+now+" +++++++++++++++");
                 for (DataSnapshot item: snapshot.getChildren()) {
                     Reminder chid_item = item.getValue(Reminder.class);
                     try {
                         time_stamp = formatter.parse(today+" "+chid_item.getReminder_time()+":00");
-                        if (time_stamp.getTime()>now.getTime()) {
+                        if (chid_item.isReminder_completed()==false && time_stamp.getTime()>now.getTime()) {
+                            Log.v(GlobalDefine.TAG, "A timer is set!");
                             new Timer().schedule(new Alarm(getApplicationContext(), chid_item), time_stamp.getTime()-now.getTime());
                         }
                     } catch (ParseException e) {

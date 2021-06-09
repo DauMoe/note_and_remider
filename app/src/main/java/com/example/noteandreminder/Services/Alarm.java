@@ -25,7 +25,6 @@ public class Alarm extends TimerTask {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void run() {
-        Log.v(GlobalDefine.TAG, "Say hi");
         Intent alarm_intent = new Intent(context, TimeupActivity.class);
         alarm_intent.putExtra("alarm_data", data);
         context.startActivity(alarm_intent);
