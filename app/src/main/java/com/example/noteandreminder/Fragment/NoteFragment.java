@@ -87,20 +87,13 @@ public class NoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //init DB
-        mDB = FirebaseDatabase.getInstance();
-        DatabaseReference ref = mDB.getReference(GlobalDefine.NOTE_DB_PATH);
+        mDB                         = FirebaseDatabase.getInstance();
+        DatabaseReference ref       = mDB.getReference(GlobalDefine.NOTE_DB_PATH);
 
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_note, container, false);
-//        test = v.findViewById(R.id.test);
-//        test.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-        note_recycle = v.findViewById(R.id.note_recycleView);
-        note_adapter = new NoteAdapter(getContext());
+        View v                      = inflater.inflate(R.layout.fragment_note, container, false);
+        note_recycle                = v.findViewById(R.id.note_recycleView);
+        note_adapter                = new NoteAdapter(getContext());
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         note_recycle.setLayoutManager(manager);
         ref.addValueEventListener(new ValueEventListener() {

@@ -9,9 +9,9 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Noteandreminder">
-        <activity android:name=".TimeupActivity">
-
+        <activity android:name=".ColorPickerActivity">
         </activity>
+        <activity android:name=".TimeupActivity"></activity>
         <activity
             android:name=".NoteDetailActivity"
             android:windowSoftInputMode="adjustNothing" />
@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- android:windowSoftInputMode="adjustResize" -->
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
 
         <service
             android:name=".Services.ReminderTimer"

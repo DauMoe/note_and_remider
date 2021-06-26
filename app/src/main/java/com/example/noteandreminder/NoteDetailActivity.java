@@ -35,7 +35,7 @@ public class NoteDetailActivity extends AppCompatActivity {
     private int selected_themeID;
     protected Note data;
     protected boolean isNewNote = true;
-    protected DatabaseReference ref = FirebaseDatabase.getInstance().getReference(GlobalDefine.NOTE_DB_PATH);;
+    protected DatabaseReference ref = FirebaseDatabase.getInstance().getReference(GlobalDefine.NOTE_DB_PATH);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,7 @@ public class NoteDetailActivity extends AppCompatActivity {
                     key = data.getNote_id();
                     System.out.println("Edit");
                 }
-                System.out.println(key);
+//                System.out.println(key);
                 ref.child(key).setValue(new Note(key, title, content, selected_themeID)).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

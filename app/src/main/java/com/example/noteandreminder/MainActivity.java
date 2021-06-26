@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -28,12 +29,19 @@ import com.example.noteandreminder.Adapter.TabLayoutAdapter;
 import com.example.noteandreminder.Module.ColorCode;
 import com.example.noteandreminder.Module.Reminder;
 import com.example.noteandreminder.Services.ReminderTimer;
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,14 +52,15 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout main_tablayout;
     private ViewPager main_viewpager;
     private TabLayoutAdapter adapter;
-    private FloatingActionButton main_fab, fab_note, fab_reminder;
+    private FloatingActionButton main_fab, fab_note, fab_reminder, fab_theme;
     private boolean fab_clicked = false;
     private int selectedThemeID=0;
 
     //List color code
     public static List<ColorCode> listColor;
     private int day, month, year, hour, min;
-    protected DatabaseReference ref = FirebaseDatabase.getInstance().getReference("reminder");
+    protected DatabaseReference ref     = FirebaseDatabase.getInstance().getReference(GlobalDefine.REMINDER_DB_PATH);
+    protected DatabaseReference theme   = FirebaseDatabase.getInstance().getReference(GlobalDefine.THEME_PATH);
 
     //Animation
     public static Animation rotate_out_fab, rotate_in_fab, to_bottom, to_top;
@@ -76,13 +85,37 @@ public class MainActivity extends AppCompatActivity {
         listColor.add(new ColorCode(4, "Purple", "#DCA1DB", "#750573"));
         listColor.add(new ColorCode(5, "Green", "#73ECD0", "#03785D"));
         listColor.add(new ColorCode(6, "Chocolate", "#A37696", "#442B3D"));
+
+        theme.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listColor.clear();
+                listColor.add(new ColorCode(0, "Pink", "#FDC1CF", "#B80202"));
+                listColor.add(new ColorCode(1, "Yellow", "#FFEDAD", "#D6691A"));
+                listColor.add(new ColorCode(2, "Blue", "#A3F8FD", "#167BD9"));
+                listColor.add(new ColorCode(3, "White", "#FFFFFF", "#45415F"));
+                listColor.add(new ColorCode(4, "Purple", "#DCA1DB", "#750573"));
+                listColor.add(new ColorCode(5, "Green", "#73ECD0", "#03785D"));
+                listColor.add(new ColorCode(6, "Chocolate", "#A37696", "#442B3D"));
+                for (DataSnapshot i: snapshot.getChildren()) {
+                    ColorCode item = i.getValue(ColorCode.class);
+                    Log.i("COLOR", "====="+ String.valueOf(i.getValue(ColorCode.class)));
+                    listColor.add(item);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void initAnimation() {
-        rotate_out_fab = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_out_fab);
-        rotate_in_fab = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_in_fab);
-        to_bottom = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translate_to_bottom);
-        to_top = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translate_to_top);
+        rotate_out_fab  = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_out_fab);
+        rotate_in_fab   = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_in_fab);
+        to_bottom       = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translate_to_bottom);
+        to_top          = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translate_to_top);
     }
 
     private void hanldingFABEvemt() {
@@ -91,24 +124,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 fab_clicked = !fab_clicked;
-                System.out.println("Clicked: "+fab_clicked);
+//                System.out.println("Clicked: "+fab_clicked);
                 if (fab_clicked) {
                     v.startAnimation(rotate_out_fab);
                     fab_note.startAnimation(to_top);
                     fab_reminder.startAnimation(to_top);
+                    fab_theme.startAnimation(to_top);
                     fab_note.setVisibility(View.VISIBLE);
                     fab_reminder.setVisibility(View.VISIBLE);
+                    fab_theme.setVisibility(View.VISIBLE);
                 } else {
                     v.startAnimation(rotate_in_fab);
                     fab_note.startAnimation(to_bottom);
                     fab_reminder.startAnimation(to_bottom);
+                    fab_theme.startAnimation(to_bottom);
                     fab_note.setVisibility(View.GONE);
                     fab_reminder.setVisibility(View.GONE);
+                    fab_theme.setVisibility(View.GONE);
                 }
             }
         });
 
-        //Add Note FAB Hanlde
+        //Add Note FAB Hanlder
         fab_note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,29 +155,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Add Reminder FAB Hanlde
+        //Add Reminder FAB Hanlder
         fab_reminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addReminderDialog();
             }
         });
+
+        //Add Theme FAB Hanlder
+        fab_theme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ColorPickerActivity.class));
+            }
+        });
     }
 
     private void addReminderDialog() {
-        LayoutInflater inflater = getLayoutInflater();
-        View v = inflater.inflate(R.layout.create_reminder, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        EditText reminder_create_datepicker = v.findViewById(R.id.reminder_create_datepicker);
-        EditText reminder_create_timepicker = v.findViewById(R.id.reminder_create_timepicker);
-        EditText reminder_create_title = v.findViewById(R.id.reminder_create_title);
-        EditText reminder_create_desc = v.findViewById(R.id.reminder_create_desc);
-        Spinner reminder_create_theme = v.findViewById(R.id.reminder_create_theme);
-        List<String> theme_color = new ArrayList<>();
+        LayoutInflater inflater                 = getLayoutInflater();
+        View v                                  = inflater.inflate(R.layout.create_reminder, null);
+        AlertDialog.Builder builder             = new AlertDialog.Builder(this);
+        EditText reminder_create_datepicker     = v.findViewById(R.id.reminder_create_datepicker);
+        EditText reminder_create_timepicker     = v.findViewById(R.id.reminder_create_timepicker);
+        EditText reminder_create_title          = v.findViewById(R.id.reminder_create_title);
+        EditText reminder_create_desc           = v.findViewById(R.id.reminder_create_desc);
+        Spinner reminder_create_theme           = v.findViewById(R.id.reminder_create_theme);
+        List<String> theme_color                = new ArrayList<>();
         for (ColorCode i: listColor) {
             theme_color.add(i.getNameColor());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, theme_color);
+        ArrayAdapter<String> adapter            = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, theme_color);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         reminder_create_theme.setAdapter(adapter);
 
@@ -228,17 +273,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initVariable() {
-        main_tablayout = findViewById(R.id.main_tablayout);
-        main_viewpager = findViewById(R.id.main_viewpager);
-        main_fab = findViewById(R.id.main_fab);
-        fab_note = findViewById(R.id.fab_notes);
-        fab_reminder = findViewById(R.id.fab_reminder);
+        main_tablayout  = findViewById(R.id.main_tablayout);
+        main_viewpager  = findViewById(R.id.main_viewpager);
+        main_fab        = findViewById(R.id.main_fab);
+        fab_note        = findViewById(R.id.fab_notes);
+        fab_reminder    = findViewById(R.id.fab_reminder);
+        fab_theme       = findViewById(R.id.fab_theme);
 
         //Background services
         startService(new Intent(MainActivity.this, ReminderTimer.class));
 
         //setup viewpager
-        adapter = new TabLayoutAdapter(getSupportFragmentManager(), TabLayoutAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        adapter         = new TabLayoutAdapter(getSupportFragmentManager(), TabLayoutAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         main_viewpager.setAdapter(adapter);
         main_viewpager.setPageTransformer(true, View::setRotationX);
 

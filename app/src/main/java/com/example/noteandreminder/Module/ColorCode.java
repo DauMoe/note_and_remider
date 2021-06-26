@@ -1,6 +1,8 @@
 package com.example.noteandreminder.Module;
 
-public class ColorCode {
+import java.io.Serializable;
+
+public class ColorCode implements Serializable {
     private int ID;
     private String nameColor, backgroundColorCode, contentColorCode;
 
@@ -9,6 +11,9 @@ public class ColorCode {
         this.nameColor = nameColor;
         this.backgroundColorCode = backgroundColorCode;
         this.contentColorCode = contentColorCode;
+    }
+
+    public ColorCode() {
     }
 
     public int getID() {

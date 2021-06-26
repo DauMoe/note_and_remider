@@ -14,15 +14,16 @@ import java.util.List;
 
 public class GlobalDefine {
     //DB path
-    public static final String REMINDER_DB_PATH = "reminder";
-    public static final String NOTE_DB_PATH = "note";
+    public static final String REMINDER_DB_PATH     = "reminder";
+    public static final String NOTE_DB_PATH         = "note";
+    public static final String THEME_PATH           = "theme";
 
     //Service
-    public static final String REMINDER = "check_reminder_task";
+    public static final String REMINDER             = "check_reminder_task";
 
     //Noti
-    public static final String ALARM_NOTI_ID = "background_alarm_noti";
+    public static final String ALARM_NOTI_ID        = "background_alarm_noti";
 
     //For Debug only
-    public static final String TAG = "main_log";
+    public static final String TAG                  = "main_log";
 }
