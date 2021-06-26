@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         listColor.add(new ColorCode(3, "White", "#FFFFFF", "#45415F"));
         listColor.add(new ColorCode(4, "Purple", "#DCA1DB", "#750573"));
         listColor.add(new ColorCode(5, "Green", "#73ECD0", "#03785D"));
-        listColor.add(new ColorCode(6, "Chocolate", "#A37696", "#442B3D"));
+        listColor.add(new ColorCode(6, "Chocolate", "#AA6440", "#50220A"));
 
         theme.addValueEventListener(new ValueEventListener() {
             @Override
@@ -96,10 +96,9 @@ public class MainActivity extends AppCompatActivity {
                 listColor.add(new ColorCode(3, "White", "#FFFFFF", "#45415F"));
                 listColor.add(new ColorCode(4, "Purple", "#DCA1DB", "#750573"));
                 listColor.add(new ColorCode(5, "Green", "#73ECD0", "#03785D"));
-                listColor.add(new ColorCode(6, "Chocolate", "#A37696", "#442B3D"));
+                listColor.add(new ColorCode(6, "Chocolate", "#AA6440", "#50220A"));
                 for (DataSnapshot i: snapshot.getChildren()) {
                     ColorCode item = i.getValue(ColorCode.class);
-                    Log.i("COLOR", "====="+ String.valueOf(i.getValue(ColorCode.class)));
                     listColor.add(item);
                 }
             }

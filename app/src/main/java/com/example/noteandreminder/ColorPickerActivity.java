@@ -83,7 +83,7 @@ public class ColorPickerActivity extends AppCompatActivity {
                     return;
                 }
                 if (!isChooseBg || !isChooseTitle) {
-                    Toast.makeText(getApplicationContext(), "Set theme name!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Set both title & background color!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 isChooseBg      = false;
