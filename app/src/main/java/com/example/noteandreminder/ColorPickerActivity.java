@@ -95,6 +95,7 @@ public class ColorPickerActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Create success!", Toast.LENGTH_LONG).show();
                             startActivity(new Intent(ColorPickerActivity.this, MainActivity.class));
                             finish();
                         } else {

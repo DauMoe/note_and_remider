@@ -19,7 +19,7 @@
     <TextView
         android:layout_marginTop="8dp"
         android:id="@+id/theme_content"
-        android:text="Hold to delete!"
+        android:text="Note content!"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>
