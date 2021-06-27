@@ -1,18 +1,17 @@
 package com.example.noteandreminder;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
+import androidx.appcompat.widget.Toolbar;
+
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -20,19 +19,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.noteandreminder.Adapter.TabLayoutAdapter;
 import com.example.noteandreminder.Module.ColorCode;
 import com.example.noteandreminder.Module.Reminder;
 import com.example.noteandreminder.Services.ReminderTimer;
-import com.flask.colorpicker.ColorPickerView;
-import com.flask.colorpicker.OnColorSelectedListener;
-import com.flask.colorpicker.builder.ColorPickerClickListener;
-import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager main_viewpager;
     private TabLayoutAdapter adapter;
     private FloatingActionButton main_fab, fab_note, fab_reminder, fab_theme;
+    private Toolbar toolbar;
     private boolean fab_clicked = false;
     private int selectedThemeID=0;
 
@@ -72,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initColor();
         initAnimation();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         initVariable();
         hanldingFABEvemt();
     }
@@ -254,7 +259,9 @@ public class MainActivity extends AppCompatActivity {
                 String desc = reminder_create_desc.getText().toString();
                 String datereminder = reminder_create_datepicker.getText().toString();
                 String timereminder = reminder_create_timepicker.getText().toString();
-                ref.child(key).setValue(new Reminder(key, title, desc, datereminder, timereminder, selectedThemeID, false)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                ref.child(key)
+                        .setValue(new Reminder(key, title, desc, datereminder, timereminder, selectedThemeID, false))
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -274,10 +281,14 @@ public class MainActivity extends AppCompatActivity {
     private void initVariable() {
         main_tablayout  = findViewById(R.id.main_tablayout);
         main_viewpager  = findViewById(R.id.main_viewpager);
+        toolbar         = findViewById(R.id.toolbar);
         main_fab        = findViewById(R.id.main_fab);
         fab_note        = findViewById(R.id.fab_notes);
         fab_reminder    = findViewById(R.id.fab_reminder);
         fab_theme       = findViewById(R.id.fab_theme);
+
+        //Add toolbar option
+        setSupportActionBar(toolbar);
 
         //Background services
         startService(new Intent(MainActivity.this, ReminderTimer.class));
@@ -291,5 +302,22 @@ public class MainActivity extends AppCompatActivity {
         main_tablayout.setupWithViewPager(main_viewpager);
         main_tablayout.getTabAt(0).setIcon(R.drawable.ic_note);
         main_tablayout.getTabAt(1).setIcon(R.drawable.ic_reminder);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.theme_manager:
+                startActivity(new Intent(MainActivity.this, ThemeManagerActivity.class));
+                break;
+        }
+        return true;
     }
 }

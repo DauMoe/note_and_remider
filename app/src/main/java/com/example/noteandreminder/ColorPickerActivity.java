@@ -88,8 +88,10 @@ public class ColorPickerActivity extends AppCompatActivity {
                 }
                 isChooseBg      = false;
                 isChooseTitle   = false;
-                String key      = ref.push().getKey();
-                ref.child(key).setValue(new ColorCode(listColor.size(), name, bg_code, content_code)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                ref
+                        .child(String.valueOf(listColor.size()))
+                        .setValue(new ColorCode(listColor.size(), name, bg_code, content_code))
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {

@@ -95,6 +95,7 @@ public class NoteFragment extends Fragment {
         note_recycle                = v.findViewById(R.id.note_recycleView);
         note_adapter                = new NoteAdapter(getContext());
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+
         note_recycle.setLayoutManager(manager);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -110,7 +111,7 @@ public class NoteFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Canceled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "DB error!", Toast.LENGTH_SHORT).show();
             }
         });
         return v;

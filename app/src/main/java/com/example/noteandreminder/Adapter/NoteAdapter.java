@@ -98,15 +98,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             }
         };
 
-        holder.note_preview.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Delete note?")
-                        .setPositiveButton("Yes", deleteNoteOrNot).setNegativeButton("No", deleteNoteOrNot).show();
-                return false;
-            }
-        });
+//        holder.note_preview.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setMessage("Delete note?")
+//                        .setPositiveButton("Yes", deleteNoteOrNot).setNegativeButton("No", deleteNoteOrNot).show();
+//                return false;
+//            }
+//        });
     }
 
     @Override

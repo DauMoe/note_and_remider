@@ -9,17 +9,14 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Noteandreminder">
-        <activity android:name=".ColorPickerActivity">
-        </activity>
-        <activity android:name=".TimeupActivity"></activity>
-        <activity
-            android:name=".NoteDetailActivity"
-            android:windowSoftInputMode="adjustNothing" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".ThemeManagerActivity"/>
+        <activity android:name=".ColorPickerActivity" />
+        <activity android:name=".TimeupActivity" />
+        <activity android:name=".NoteDetailActivity"/>
+        <activity android:name=".MainActivity"/>
         <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- android:windowSoftInputMode="adjustResize" -->
